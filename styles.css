@@ -13,6 +13,32 @@
     --container-width: 1200px;
 }
 
+/* About Image */
+/* About Image */
+.about-img {
+    width: 100%;
+    max-width: 500px;
+    /* Increased from 400px */
+    height: 600px;
+    /* Increased from 500px */
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.about-img:hover {
+    transform: scale(1.02);
+}
+
+.about-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 body.light-mode {
     --bg-color: #f8fafc;
     --bg-card: #ffffff;
@@ -36,11 +62,41 @@ html {
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: var(--bg-color);
     color: var(--text-primary);
+    background-color: var(--bg-color);
     line-height: 1.6;
     overflow-x: hidden;
+    cursor: none;
+    /* Hide default cursor */
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom Yellow Cursor */
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #fca311;
+    /* Yellow */
+    /* Standard Arrow Shape */
+    clip-path: polygon(0 0, 0% 100%, 25% 75%, 55% 100%, 65% 90%, 35% 65%, 75% 65%);
+    transform: translate(0, 0) rotate(0deg);
+    /* Reset rotation */
+    pointer-events: none;
+    z-index: 9999;
+    /* box-shadow doesn't work well with clip-path, use filter drop-shadow if needed */
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+    mix-blend-mode: normal;
+    /* Better visibility */
+    transition: transform 0.1s ease;
+}
+
+/* Hover state for cursor */
+.custom-cursor.hovered {
+    transform: translate(-50%, -50%) scale(1.5);
+    background-color: #ffb703;
 }
 
 /* Mouse Effects */
@@ -78,6 +134,7 @@ a {
     text-decoration: none;
     color: inherit;
     transition: 0.3s;
+    cursor: none;
 }
 
 ul {
@@ -162,7 +219,7 @@ body.light-mode .navbar {
     background: transparent;
     border: none;
     color: var(--text-primary);
-    cursor: pointer;
+    cursor: none;
     font-size: 1.2rem;
     padding: 0.5rem;
     transition: transform 0.3s;
@@ -175,7 +232,7 @@ body.light-mode .navbar {
 .mobile-menu-btn {
     display: none;
     font-size: 1.5rem;
-    cursor: pointer;
+    cursor: none;
 }
 
 /* --- User Provided Styles (Refined) --- */
@@ -288,7 +345,7 @@ body.light-mode .navbar {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
-    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    /* text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); Removed to fix weird artifact */
     max-width: 100%;
 }
 
@@ -297,7 +354,7 @@ body.light-mode .hero-title {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    /* text-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); Removed */
 }
 
 
@@ -575,6 +632,18 @@ body.light-mode .description {
     align-items: center;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border-color);
+}
+
+/* Card Hover Fix */
+.service-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px) !important;
+    /* Override reveal transform */
+    border-color: var(--secondary);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 
 .project-link {
@@ -868,8 +937,10 @@ body.light-mode .cta-section {
 }
 
 .btn-icon:hover {
-    transform: scale(1.1) rotate(-10deg);
-    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.5);
+    transform: scale(1.02);
+    /* Slight scale */
+    border-color: var(--secondary);
+    box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.3);
 }
 
 footer {
@@ -1036,27 +1107,56 @@ body.light-mode .progress-wrap {
 /* --- Typewriter Effect --- */
 .typewriter-container,
 .typewriter-row {
-    display: block;
+    display: flex;
+    justify-content: center;
     line-height: 1;
 }
 
 .typewriter-text {
     display: inline-block;
     overflow: hidden;
-    border-right: 0.1em solid var(--secondary);
-    /* The cursor */
+    border-right: none;
     white-space: nowrap;
-    margin: 0 auto;
-    letter-spacing: -0.04em;
-    /* Match hero-title */
-    animation:
-        typing 3.5s steps(30, end),
-        blink-caret 0.75s step-end infinite;
-    max-width: 0;
-    animation-fill-mode: forwards;
 
-    /* Responsive adjustment */
-    white-space: nowrap;
+    /* Removed margin: 0 auto; to allow left-to-right growth from center point if using flex or specific width */
+    margin: 0;
+
+    letter-spacing: -0.04em;
+    animation:
+        typing 3.5s steps(30, end) forwards;
+    width: 0;
+    /* Start width 0 */
+}
+
+@media (max-width: 500px) {
+    .typewriter-text {
+        white-space: normal;
+        border-right: none;
+        animation: fade-in 2s ease forwards !important;
+        width: 100% !important;
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+
+    /* Note: overridden by inline style width */
 }
 
 @media (max-width: 500px) {

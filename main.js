@@ -51,7 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Mouse Effects ---
-    const cursorGlow = document.getElementById('cursor-glow');
+    // Remove old cursor glow element from DOM if exists
+    const oldCursor = document.getElementById('cursor-glow');
+    if (oldCursor) oldCursor.remove();
+
+    // Create new custom cursor
+    const customCursor = document.createElement('div');
+    customCursor.classList.add('custom-cursor');
+    document.body.appendChild(customCursor);
+
     const canvas = document.getElementById('trail-canvas');
     const ctx = canvas.getContext('2d');
 
@@ -79,11 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
 
-        // Move Glow
-        // Use requestAnimationFrame for smoother DOM updates if needed, 
-        // but direct style update is usually fine for simple transforms
-        cursorGlow.style.left = `${mouse.x}px`;
-        cursorGlow.style.top = `${mouse.y}px`;
+        // Move Custom Cursor
+        customCursor.style.left = `${mouse.x}px`;
+        customCursor.style.top = `${mouse.y}px`;
 
         // Add point to trail
         points.push({
@@ -91,6 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
             y: mouse.y,
             age: 0
         });
+    });
+
+    // Cursor Hover Effect
+    document.querySelectorAll('a, button, .service-card, .timeline-item').forEach(el => {
+        el.addEventListener('mouseenter', () => customCursor.classList.add('hovered'));
+        el.addEventListener('mouseleave', () => customCursor.classList.remove('hovered'));
     });
 
     let trailColor = 'rgba(99, 102, 241, 0.5)'; // Default Primary
@@ -198,7 +210,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('.progress-wrap').addEventListener('click', function (event) {
         event.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Custom Smooth Scroll to Top
+        const startPosition = window.pageYOffset;
+        const distance = -startPosition; // Target is 0, so distance is negative start
+        let startTime = null;
+        const duration = 1500; // Slower duration for long web pages (1.5s)
+
+        function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            window.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+        }
+
+        function ease(t, b, c, d) {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t * t + b;
+            t -= 2;
+            return c / 2 * (t * t * t + 2) + b;
+        }
+
+        requestAnimationFrame(animation);
         return false;
     });
 
