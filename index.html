@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmed Abouelwafa - Full Stack Developer</title>
+    <meta name="description"
+        content="Portfolio of Ahmed Abouelwafa, a Full Stack .NET & Angular Developer and Instructor.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Mouse Cursor Effects -->
+    <div class="cursor-glow" id="cursor-glow"></div>
+    <canvas id="trail-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo-link">
+                <img src="images/LOGO.png" alt="Logo" class="nav-logo">
+            </a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#experience">Experience</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="header-section">
+            <div class="container">
+                <div class="hero-content">
+
+                    <div class="hero-main-row">
+                        <div class="relative-container">
+                            <div class="dashed-circle"></div>
+                            <h1 class="hero-title">
+                                <div class="typewriter-row">
+                                    <span class="typewriter-text"
+                                        style="animation-duration: 1s; border-color: transparent;">Ahmed</span>
+                                </div>
+                                <div class="typewriter-row">
+                                    <span class="typewriter-text"
+                                        style="animation-delay: 1s; animation-duration: 1.5s;">Abouelwafa</span>
+                                </div>
+                            </h1>
+                        </div>
+                        <div class="hero-image-container floating-anim-delayed">
+                            <img src="images/personal.png" alt="Ahmed Abouelwafa" class="hero-profile-img">
+                        </div>
+                    </div>
+
+                    <div class="badge-pill">Full Stack .NET & Angular Developer</div>
+
+                    <div class="hero-cta">
+                        <a href="cv/Ahmed Abouelwafa Mohamed.pdf" download class="btn-primary btn-cv">
+                            <i class="fas fa-file-download"></i> Download CV
+                        </a>
+                        <a href="#projects" class="btn-secondary">View Projects</a>
+                        <a href="#contact" class="btn-icon-only" aria-label="Contact">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section about-section">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2>About Me</h2>
+                    <p>My technical journey and skills</p>
+                </div>
+
+                <div class="about-content reveal">
+                    <div class="about-text">
+                        <span class="section-badge">Who I Am</span>
+                        <h2>Passionate Software Engineer & Instructor</h2>
+                        <p>
+                            Full Stack .NET Engineer & Instructor with strong experience in building scalable, modular
+                            systems using Clean Architecture, SOLID, and CQRS. Skilled in C#, ASP.NET Core, EF Core, SQL
+                            Server, and Angular, with hands-on experience integrating MediatR and RabbitMQ in
+                            distributed and message-driven systems.
+                        </p>
+                        <p>
+                            I specialize in Technical Instruction & Session Leading, simplifying complex concepts, and
+                            providing code reviews & mentorship.
+                        </p>
+
+                        <!-- Tech Stack Categories -->
+                        <div class="tech-stack-container">
+                            <div class="tech-category">
+                                <h3>Backend / Server-Side</h3>
+                                <div class="tags">
+                                    <span>C#</span><span>ASP.NET Core</span><span>ASP.NET MVC</span><span>Entity
+                                        Framework</span>
+                                    <span>LINQ</span><span>SignalR</span><span>Web API</span><span>xUnit</span>
+                                </div>
+                            </div>
+                            <div class="tech-category">
+                                <h3>Frontend / Client-Side</h3>
+                                <div class="tags">
+                                    <span>Angular</span><span>TypeScript</span><span>JavaScript</span><span>HTML5</span>
+                                    <span>CSS3</span><span>Bootstrap</span><span>ECMAScript</span>
+                                </div>
+                            </div>
+                            <div class="tech-category">
+                                <h3>Languages</h3>
+                                <div class="tags">
+                                    <span>C#</span><span>C++</span><span>Python</span><span>Java</span><span>SQL</span><span>TypeScript</span>
+                                </div>
+                            </div>
+                            <div class="tech-category">
+                                <h3>Data & Tools</h3>
+                                <div class="tags">
+                                    <span>SQL Server</span><span>Git</span><span>GitHub</span><span>Agile</span>
+                                </div>
+                            </div>
+                            <div class="tech-category">
+                                <h3>Architecture & Practices</h3>
+                                <div class="tags">
+                                    <span>Clean Architecture</span><span>Design Patterns</span><span>OOP</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="about-visual">
+                        <div class="visual-circle"></div>
+                        <!-- Profile image moved to Hero -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Professional Experience</h2>
+                    <p>My career journey & teaching roles</p>
+                </div>
+
+                <div class="timeline">
+                    <!-- Item 1: AMIT -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content feature-card">
+                            <div class="exp-header">
+                                <img src="images/AMIT Learning.png" alt="AMIT Logo" class="exp-logo"
+                                    onerror="this.style.display='none'">
+                                <div>
+                                    <span class="date">Part-time</span>
+                                    <h3>Full Stack .Net & Angular Instructor</h3>
+                                    <p class="role">AMIT Learning</p>
+                                </div>
+                            </div>
+                            <ul>
+                                <li>Delivering training programs in Full Stack Development using .NET Core, C#, Entity
+                                    Framework, SQL Server, Web API, and Angular.</li>
+                                <li>Designing and developing full-stack web applications with a focus on clean
+                                    architecture, OOP, and SOLID principles.</li>
+                                <li>Mentoring and guiding learners through hands-on projects, coding exercises, and
+                                    real-world use cases.</li>
+                                <li>Creating and updating course materials to ensure industry-relevant content.</li>
+                                <li>Supporting students in building strong foundations in backend, frontend, and
+                                    database development.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: DEPI -->
+                    <div class="timeline-item reveal">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content feature-card">
+                            <div class="exp-header">
+                                <img src="images/depi.png" alt="DEPI Logo" class="exp-logo"
+                                    onerror="this.style.display='none'">
+                                <div>
+                                    <span class="date">Part-time</span>
+                                    <h3>Technical Consultant & Instructor (DEPI)</h3>
+                                    <p class="role">Digital Egypt Pioneers Initiative</p>
+                                </div>
+                            </div>
+                            <p class="description">
+                                Delivering advanced Full Stack training tracks, mentoring students, and ensuring
+                                high-quality technical output for the Digital Egypt Pioneers Initiative.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3: Udacity -->
+                    <div class="timeline-item reveal">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content feature-card">
+                            <div class="exp-header">
+                                <img src="images/udacity.png" alt="Udacity Logo" class="exp-logo"
+                                    onerror="this.style.display='none'">
+                                <div>
+                                    <span class="date">Part-time</span>
+                                    <h3>Session Lead | Web Development Mentor</h3>
+                                    <p class="role">Udacity</p>
+                                </div>
+                            </div>
+                            <p class="description">
+                                🌐 As a Session Lead at Udacity (DECI Program), I guide and support learners throughout
+                                their Web Development Nanodegree journey.
+                                I provide technical mentorship, review projects, and help students build strong
+                                foundations in front-end and back-end technologies.
+                                My mission is to empower future developers to think critically, write clean code, and
+                                create impactful digital experiences.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="section">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2>Education</h2>
+                    <p>Academic background & certifications</p>
+                </div>
+
+                <div class="timeline">
+                    <!-- ITI -->
+                    <div class="timeline-item reveal">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content feature-card">
+                            <span class="date">03/2025 – 08/2025</span>
+                            <h3>Information Technology Institute (ITI)</h3>
+                            <p class="role">Internship: Full Stack .NET Development Track</p>
+                            <ul>
+                                <li>Built robust APIs with ASP.NET Core Web API and Swagger documentation</li>
+                                <li>Created dynamic UIs with Angular, HTML5, CSS3, TypeScript</li>
+                                <li>Managed data with Entity Framework and LINQ</li>
+                                <li>Ensured quality through unit testing with XUnit</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- University -->
+                    <div class="timeline-item reveal">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content feature-card">
+                            <h3>Faculty of Computers and Information</h3>
+                            <p class="role">Luxor University</p>
+                            <p class="description">
+                                Bachelor's Degree in Computer Science / Information Systems.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Huawei -->
+                    <!-- Huawei -->
+                    <div class="timeline-item reveal">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content feature-card">
+                            <div class="exp-header">
+                                <!-- Optional Huawei Logo -->
+                                <div>
+                                    <h3>Big Data HCIA Specialist Trainee</h3>
+                                    <p class="role">Huawei</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ECPC -->
+                    <!-- ECPC -->
+                    <div class="timeline-item reveal">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content feature-card">
+                            <span class="date">2021 - 2022</span>
+                            <h3>ECPC Participant</h3>
+                            <p class="role">Competitive Programming</p>
+                            <ul>
+                                <li>Participated in ECPC 2021</li>
+                                <li>Achieved 63rd place in ECPC Upper Egypt 2022</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2>Featured Projects</h2>
+                    <p>Showcasing my technical capabilities</p>
+                </div>
+
+                <div class="services-grid">
+                    <!-- Project 1 -->
+                    <div class="service-card">
+                        <div class="category-tag">Full Stack</div>
+                        <div class="card-image-placeholder"
+                            style="background: linear-gradient(135deg, #4f46e5, #ec4899);"></div>
+                        <div class="card-body">
+                            <div class="card-info">
+                                <div class="rating">
+                                    <i class="fas fa-star"></i> ASP.NET Core & Angular
+                                </div>
+                                <h3>AseerElKotb - Bookstore App</h3>
+                                <p class="description">
+                                    E-commerce web app inspired by Aseer AlKotb. Features Clean Architecture, CQRS,
+                                    MediatR, and AI Integrations (RAG Chat, AI Image Gen).
+                                </p>
+                                <div class="tech-usage">
+                                    <div class="tech-bar">
+                                        <div class="bar-fill" style="width: 52.5%; background-color: #178600;"></div>
+                                        <div class="bar-fill" style="width: 27%; background-color: #563d7c;"></div>
+                                        <div class="bar-fill" style="width: 20.5%; background-color: #e34c26;"></div>
+                                    </div>
+                                    <small>C# 52% | CSS 27% | HTML 20%</small>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a href="https://github.com/AhmedAbouelwafa/AseerElKotb" target="_blank"
+                                    class="project-link">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                                <a href="https://aseeralkotb.vercel.app/" target="_blank" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i> Live Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Project 2: ServiceBookingSystem -->
+                    <div class="service-card">
+                        <div class="category-tag">Booking System</div>
+                        <div class="card-image-placeholder"
+                            style="background: linear-gradient(135deg, #3b82f6, #06b6d4);"></div>
+                        <div class="card-body">
+                            <div class="card-info">
+                                <div class="rating">
+                                    <i class="fas fa-star"></i> Booking System
+                                </div>
+                                <h3>Service Booking System</h3>
+                                <p class="description">
+                                    Integrated online service booking system with user-friendly scheduling and admin
+                                    control panel for managing services and operating hours.
+                                </p>
+                                <div class="tech-usage">
+                                    <div class="tech-bar">
+                                        <div class="bar-fill" style="width: 100%; background-color: #178600;"></div>
+                                    </div>
+                                    <small>Full Stack .NET & Angular</small>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a href="https://github.com/AhmedAbouelwafa/ServiceBookingSystem" target="_blank"
+                                    class="project-link">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3: JALABIZO -->
+                    <div class="service-card reveal">
+                        <div class="category-tag">Fashion Tech</div>
+                        <div class="card-image-placeholder"
+                            style="background: linear-gradient(135deg, #f43f5e, #be123c);"></div>
+                        <div class="card-body">
+                            <div class="card-info">
+                                <div class="rating">
+                                    <i class="fas fa-star"></i> E-Commerce
+                                </div>
+                                <h3>JALABIZO</h3>
+                                <p class="description">
+                                    Cutting-edge fashion store for premium streetwear & oriental outfits, featuring
+                                    virtual try-on technology to see how pieces look on your body.
+                                </p>
+                                <div class="tech-usage">
+                                    <div class="tech-bar">
+                                        <div class="bar-fill" style="width: 100%; background-color: #e34c26;"></div>
+                                    </div>
+                                    <small>AI & Full Stack</small>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a href="https://github.com/AhmedAbouelwafa/JALABIZO" target="_blank"
+                                    class="project-link">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4: ECompanyHub -->
+                    <div class="service-card reveal">
+                        <div class="category-tag">Enterprise</div>
+                        <div class="card-image-placeholder"
+                            style="background: linear-gradient(135deg, #0ea5e9, #10b981);"></div>
+                        <div class="card-body">
+                            <div class="card-info">
+                                <div class="rating">
+                                    <i class="fas fa-star"></i> Enterprise Hub
+                                </div>
+                                <h3>ECompanyHub</h3>
+                                <p class="description">
+                                    Full-stack web application for company operations: user handling, data organization,
+                                    and API-driven interactions.
+                                </p>
+                                <div class="tech-usage">
+                                    <div class="tech-bar">
+                                        <div class="bar-fill" style="width: 100%; background-color: #178600;"></div>
+                                    </div>
+                                    <small>C# 100% (Backend)</small>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a href="https://github.com/AhmedAbouelwafa/EcompanyHub_FrontEnd" target="_blank"
+                                    class="project-link">
+                                    <i class="fab fa-github"></i> Frontend
+                                </a>
+                                <a href="https://github.com/AhmedAbouelwafa/EcompanyHub_BackEnd" target="_blank"
+                                    class="project-link">
+                                    <i class="fab fa-github"></i> Backend
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="service-card">
+                        <div class="category-tag">Extension</div>
+                        <div class="card-image-placeholder"
+                            style="background: linear-gradient(135deg, #f59e0b, #ef4444);"></div>
+                        <div class="card-body">
+                            <div class="card-info">
+                                <div class="rating">
+                                    <i class="fas fa-star"></i> Chrome Extension
+                                </div>
+                                <h3>Huroof</h3>
+                                <p class="description">
+                                    Lightweight extension to fix bilingual typing mistakes (Arabic/English) with a
+                                    shortcut (Ctrl + Shift + M).
+                                </p>
+                                <div class="tech-usage">
+                                    <div class="tech-bar">
+                                        <div class="bar-fill" style="width: 86.6%; background-color: #f1e05a;"></div>
+                                        <div class="bar-fill" style="width: 6.7%; background-color: #563d7c;"></div>
+                                        <div class="bar-fill" style="width: 6.7%; background-color: #e34c26;"></div>
+                                    </div>
+                                    <small>JS 86% | CSS 6%</small>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a href="https://github.com/AhmedAbouelwafa/Huroof_Extension" target="_blank"
+                                    class="project-link">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="service-card">
+                        <div class="category-tag">E-Commerce</div>
+                        <div class="card-image-placeholder"
+                            style="background: linear-gradient(135deg, #8b5cf6, #d946ef);"></div>
+                        <div class="card-body">
+                            <div class="card-info">
+                                <div class="rating">
+                                    <i class="fas fa-star"></i> PC Store
+                                </div>
+                                <h3>PCBundle Store</h3>
+                                <p class="description">
+                                    Simple e-commerce for PC hardware bundles. Focus on clarity, usability, and core web
+                                    fundamentals.
+                                </p>
+                                <div class="tech-usage">
+                                    <div class="tech-bar">
+                                        <div class="bar-fill" style="width: 47.5%; background-color: #e34c26;"></div>
+                                        <div class="bar-fill" style="width: 28.6%; background-color: #563d7c;"></div>
+                                        <div class="bar-fill" style="width: 23.9%; background-color: #f1e05a;"></div>
+                                    </div>
+                                    <small>HTML 47% | CSS 28% | JS 24%</small>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a href="https://github.com/AhmedAbouelwafa/PCBundle_Store" target="_blank"
+                                    class="project-link">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="section">
+            <div class="container">
+                <div class="cta-section">
+                    <div class="cta-content">
+                        <h2>Ready to Collaborate?</h2>
+                        <p>Let's build scalable and authentic solutions together.</p>
+                        <a href="#contact" class="btn-cta">Get in Touch</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Connect With Me</h2>
+                    <p>Find me on social platforms</p>
+                </div>
+
+                <div class="contact-grid reveal">
+                    <a href="https://github.com/AhmedAbouelwafa" target="_blank" class="btn-icon"
+                        data-tooltip="Explore my Code">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ahmed-abou-el-wafa/" target="_blank" class="btn-icon"
+                        data-tooltip="Connect professionally">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@lolnetacademy" target="_blank" class="btn-icon"
+                        data-tooltip="Watch my Tutorials">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://www.facebook.com/Abouelwafa.eg/" target="_blank" class="btn-icon"
+                        data-tooltip="Follow Updates">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://linktr.ee/AhmedAbouelwafa" target="_blank" class="btn-icon"
+                        data-tooltip="All Links">
+                        <i class="fas fa-link"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Ahmed Abouelwafa. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll Progress Button -->
+    <div class="progress-wrap-container">
+        <div class="progress-wrap" id="progress-wrap">
+            <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+            </svg>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
