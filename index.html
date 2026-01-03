@@ -12,7 +12,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet" />
+    rel="stylesheet">
+  <!-- Devicon -->
+  <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -44,6 +46,7 @@
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
           <i class="fas fa-moon"></i>
         </button>
+
       </div>
       <div class="mobile-menu-btn" id="mobile-menu-btn">
         <i class="fas fa-bars"></i>
@@ -131,11 +134,7 @@
           <div class="hero-cta">
             <a href="cv/Ahmed Abouelwafa Mohamed.pdf" download class="btn-primary btn-cv">
               <i class="fas fa-file-download"></i> Download CV
-            </a>
-            <a href="#projects" class="btn-secondary">View Projects</a>
-            <a href="#contact" class="btn-icon-only" aria-label="Contact">
-              <i class="fas fa-envelope"></i>
-            </a>
+              <a href="#projects" class="btn-secondary">View Projects</a>
           </div>
         </div>
       </div>
@@ -152,59 +151,146 @@
         <div class="about-content reveal">
           <div class="about-text">
             <span class="section-badge">Who I Am</span>
-            <h2>Passionate Software Engineer & Instructor</h2>
-            <p>
-              Full Stack .NET Engineer & Instructor with strong experience in
-              building scalable, modular systems using Clean Architecture,
-              SOLID, and CQRS. Skilled in C#, ASP.NET Core, EF Core, SQL
-              Server, and Angular, with hands-on experience integrating
-              MediatR and RabbitMQ in distributed and message-driven systems.
-            </p>
-            <p>
-              I specialize in Technical Instruction & Session Leading,
-              simplifying complex concepts, and providing code reviews &
-              mentorship.
-            </p>
 
-            <!-- Tech Stack Categories -->
+            <!-- VS Code Editor Look -->
+            <div class="code-editor-window">
+              <div class="editor-header">
+                <div class="window-controls">
+                  <span class="control red"></span>
+                  <span class="control yellow"></span>
+                  <span class="control green"></span>
+                </div>
+                <div class="file-name">Profile.cs</div>
+              </div>
+              <div class="editor-body">
+                <div class="line"><span class="keyword">public class</span> <span
+                    class="class-name">AhmedAbouelwafa</span> : <span class="interface">IDeveloper</span>, <span
+                    class="interface">IInstructor</span></div>
+                <div class="line">{</div>
+                <div class="line indent"><span class="keyword">public string</span> Location => <span
+                    class="string">"Cairo, Egypt"</span>;</div>
+                <div class="line indent"><span class="keyword">public string</span> CurrentRole => <span
+                    class="string">"Full Stack .NET Engineer"</span>;</div>
+                <div class="line indent"><span class="keyword">public</span> <span
+                    class="class-name">List</span>&lt;<span class="string">string</span>&gt; CoreValues = <span
+                    class="keyword">new</span>() { <span class="string">"Clean Code"</span>, <span
+                    class="string">"DDD"</span>, <span class="string">"Mentorship"</span> };</div>
+                <div class="line"></div>
+                <div class="line indent"><span class="keyword">public void</span> <span
+                    class="function">Introduce</span>()</div>
+                <div class="line indent">{</div>
+                <div class="line double-indent"><span class="comment">// Passionate about simplifying complex
+                    concepts.</span></div>
+                <div class="line double-indent">Console.WriteLine(<span class="string">"Building robust, scalable
+                    systems is my craft."</span>);</div>
+                <div class="line double-indent">Console.WriteLine(<span class="string">"Helping students master .NET &
+                    Angular is my mission."</span>);</div>
+                <div class="line double-indent"><span class="keyword">return</span> <span class="string">"Let's code
+                    something amazing together!"</span>;</div>
+                <div class="line indent">}</div>
+                <div class="line">}</div>
+              </div>
+            </div>
+
+            <!-- Tech Stack Categories with Modern Cards -->
             <div class="tech-stack-container">
+
               <div class="tech-category">
                 <h3>Backend / Server-Side</h3>
-                <div class="tags">
-                  <span>C#</span><span>ASP.NET Core</span><span>ASP.NET MVC</span><span>Entity Framework</span>
-                  <span>LINQ</span><span>SignalR</span><span>Web API</span><span>xUnit</span>
+                <div class="tech-grid">
+                  <div class="skill-card"><i class="devicon-csharp-plain"></i><span>C#</span></div>
+                  <div class="skill-card"><i class="devicon-dotnetcore-plain"></i><span>.NET Core</span></div>
+                  <div class="skill-card"><i class="devicon-dot-net-plain-wordmark"></i><span>MVC</span></div>
+                  <div class="skill-card"><i class="fas fa-database"></i><span>EF Core</span></div>
+                  <div class="skill-card"><i class="fas fa-filter"></i><span>LINQ</span></div>
+                  <div class="skill-card"><i class="fas fa-broadcast-tower"></i><span>SignalR</span></div>
+                  <div class="skill-card"><i class="fas fa-server"></i><span>Web API</span></div>
+                  <div class="skill-card"><i class="fas fa-check-circle"></i><span>xUnit</span></div>
                 </div>
               </div>
+
               <div class="tech-category">
                 <h3>Frontend / Client-Side</h3>
-                <div class="tags">
-                  <span>Angular</span><span>TypeScript</span><span>JavaScript</span><span>HTML5</span>
-                  <span>CSS3</span><span>Bootstrap</span><span>ECMAScript</span>
+                <div class="tech-grid">
+                  <div class="skill-card"><i class="devicon-angularjs-plain"></i><span>Angular</span></div>
+                  <div class="skill-card"><i class="devicon-typescript-plain"></i><span>TypeScript</span></div>
+                  <div class="skill-card"><i class="devicon-javascript-plain"></i><span>JavaScript</span></div>
+                  <div class="skill-card"><i class="devicon-html5-plain"></i><span>HTML5</span></div>
+                  <div class="skill-card"><i class="devicon-css3-plain"></i><span>CSS3</span></div>
+                  <div class="skill-card"><i class="devicon-bootstrap-plain"></i><span>Bootstrap</span></div>
                 </div>
               </div>
-              <div class="tech-category">
-                <h3>Languages</h3>
-                <div class="tags">
-                  <span>C#</span><span>C++</span><span>Python</span><span>Java</span><span>TypeScript</span>
-                </div>
-              </div>
+
               <div class="tech-category">
                 <h3>Data & Tools</h3>
-                <div class="tags">
-                  <span>SQL Server</span><span>Git</span><span>GitHub</span><span>Agile</span>
+                <div class="tech-grid">
+                  <div class="skill-card"><i class="devicon-microsoftsqlserver-plain"></i><span>SQL Server</span></div>
+                  <div class="skill-card"><i class="devicon-git-plain"></i><span>Git</span></div>
+                  <div class="skill-card"><i class="devicon-github-original"></i><span>GitHub</span></div>
+                  <div class="skill-card"><i class="fas fa-tasks"></i><span>Agile</span></div>
                 </div>
               </div>
+
               <div class="tech-category">
-                <h3>Architecture & Practices</h3>
-                <div class="tags">
-                  <span>Clean Architecture</span><span>Design Patterns</span><span>OOP</span>
+                <h3>Architecture & Concepts</h3>
+                <div class="tech-grid">
+                  <div class="skill-card"><i class="fas fa-layer-group"></i><span>Clean Arch</span></div>
+                  <div class="skill-card"><i class="fas fa-cubes"></i><span>Design Patterns</span></div>
+                  <div class="skill-card"><i class="fas fa-code"></i><span>OOP</span></div>
                 </div>
               </div>
+
             </div>
           </div>
 
           <div class="about-visual">
-            <img src="images/who am i.jpg" alt="Who I Am" class="about-img" onerror="this.src='images/personal.png'" />
+            <div class="visual-wrapper">
+              <img src="images/who am i.jpg" alt="Who I Am" class="about-img"
+                onerror="this.src='images/personal.png'" />
+              <!-- <img src="images/skills.jpg" alt="Skills" class="about-img" style="margin-top: 2rem;"
+                onerror="this.style.display='none'" /> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Teaching Methodology Section -->
+    <section id="teaching" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>Teaching Methodology</h2>
+          <p>My approach to sharing knowledge</p>
+        </div>
+
+        <div class="teaching-content reveal">
+          <div class="teaching-text">
+            <h3>Discover My Teaching Style</h3>
+            <p>
+              I believe in simplifying complex concepts through practical examples and hands-on coding.
+              My sessions are designed to be interactive, engaging, and focused on real-world application.
+              Whether it's explaining Clean Architecture or debugging a tricky error, I love the "Aha!" moment when
+              students get it.
+            </p>
+            <div class="teaching-highlights">
+              <div class="highlight-item"><i class="fas fa-chalkboard-teacher"></i> Interactive Sessions</div>
+              <div class="highlight-item"><i class="fas fa-project-diagram"></i> Real-world Projects</div>
+              <div class="highlight-item"><i class="fas fa-code-branch"></i> Code Reviews</div>
+            </div>
+            <a href="https://www.youtube.com/@lolnetacademy" target="_blank" class="btn-primary"
+              style="margin-top: 2rem;">
+              <i class="fab fa-youtube"></i> Visit My Channel
+            </a>
+          </div>
+          <div class="video-wrapper-container">
+            <div class="video-frame">
+              <!-- Placeholder Video -->
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/WSewdQTjzYs"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+            </div>
+            <div class="video-decoration"></div>
           </div>
         </div>
       </div>
@@ -628,10 +714,12 @@
           <a href="https://www.facebook.com/Abouelwafa.eg/" target="_blank" class="btn-icon"
             data-tooltip="Follow Updates">
             <i class="fab fa-facebook-f"></i>
-          </a>
-          <a href="https://linktr.ee/AhmedAbouelwafa" target="_blank" class="btn-icon" data-tooltip="All Links">
-            <i class="fas fa-link"></i>
-          </a>
+            <a href="mailto:ahmedabouelwafa@example.com" class="btn-icon" data-tooltip="Email Me">
+              <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://linktr.ee/AhmedAbouelwafa" target="_blank" class="btn-icon" data-tooltip="All Links">
+              <i class="fas fa-link"></i>
+            </a>
         </div>
       </div>
     </section>

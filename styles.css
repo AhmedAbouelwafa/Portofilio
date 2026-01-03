@@ -14,30 +14,7 @@
 }
 
 /* About Image */
-/* About Image */
-.about-img {
-    width: 100%;
-    max-width: 500px;
-    /* Increased from 400px */
-    height: 600px;
-    /* Increased from 500px */
-    object-fit: cover;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease;
-}
 
-.about-img:hover {
-    transform: scale(1.02);
-}
-
-.about-visual {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 body.light-mode {
     --bg-color: #f8fafc;
@@ -1178,9 +1155,11 @@ body.light-mode .section-header h2 {
 
 .about-content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
+    grid-template-columns: 0.6fr 1.6fr;
+    gap: 5rem;
+    /* Increased whitespace between text and image */
+    align-items: start;
+    /* Align to top so Code Palette matches Image top */
 }
 
 .about-text h2 {
@@ -1204,10 +1183,31 @@ body.light-mode .section-header h2 {
 
 .about-visual {
     position: relative;
-    height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.about-img {
+    width: 100%;
+    height: auto;
+    max-width: none;
+    /* Explicitly ensure no limit */
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.about-img:hover {
+    transform: scale(1.02);
+}
+
+.visual-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .visual-circle {
@@ -1626,5 +1626,303 @@ body.light-mode .progress-wrap {
 
     to {
         width: 100%
+    }
+}
+
+/* --- Code Editor About Me --- */
+.code-editor-window {
+    background: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.75rem;
+    /* Smaller code font */
+    color: #d4d4d4;
+    margin-bottom: 2rem;
+    border: 1px solid #333;
+    text-align: left;
+}
+
+.editor-header {
+    background: #252526;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #333;
+}
+
+.window-controls {
+    display: flex;
+    gap: 6px;
+    margin-right: 1rem;
+}
+
+.control {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.control.red {
+    background: #ff5f56;
+}
+
+.control.yellow {
+    background: #ffbd2e;
+}
+
+.control.green {
+    background: #27c93f;
+}
+
+.file-name {
+    color: #9cdcfe;
+    font-size: 0.85rem;
+}
+
+.editor-body {
+    padding: 1.5rem;
+    overflow-x: auto;
+}
+
+.line {
+    white-space: pre;
+    line-height: 1.6;
+}
+
+.indent {
+    padding-left: 1.5rem;
+}
+
+.double-indent {
+    padding-left: 3rem;
+}
+
+/* Syntax Highlighting */
+.keyword {
+    color: #569cd6;
+}
+
+.class-name {
+    color: #4ec9b0;
+}
+
+.interface {
+    color: #b8d7a3;
+}
+
+.string {
+    color: #ce9178;
+}
+
+.function {
+    color: #dcdcaa;
+}
+
+.comment {
+    color: #6a9955;
+    font-style: italic;
+}
+
+/* --- Modern Tech Stack (Skill Cards) --- */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+    /* Much smaller */
+    gap: 0.8rem;
+    margin-top: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.skill-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 0.7rem 0.3rem;
+    /* Compact padding */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-card:hover {
+    transform: translateY(-5px);
+    background: rgba(99, 102, 241, 0.1);
+    border-color: var(--primary);
+    box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.3);
+}
+
+.skill-card i {
+    font-size: 1.5rem;
+    /* Compact icon size */
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+}
+
+.skill-card:hover i {
+    color: white;
+}
+
+.skill-card span {
+    font-size: 0.65rem;
+    /* Tiny font text */
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.skill-card:hover span {
+    color: white;
+}
+
+/* Light Mode Overrides */
+body.light-mode .skill-card {
+    background: white;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .skill-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+}
+
+body.light-mode .skill-card:hover i,
+body.light-mode .skill-card:hover span {
+    color: var(--primary);
+}
+
+/* --- Teaching Methodology Section --- */
+#teaching {
+    padding: 5rem 0;
+    background: var(--bg-color);
+    /* Same as others */
+    position: relative;
+}
+
+.teaching-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.teaching-text h3 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.teaching-text p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.teaching-highlights {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    /* Added margin to push button down */
+}
+
+.highlight-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.highlight-item i {
+    color: var(--secondary);
+    width: 30px;
+    text-align: center;
+}
+
+.video-wrapper-container {
+    position: relative;
+    padding: 1rem;
+}
+
+.video-frame {
+    position: relative;
+    z-index: 2;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    aspect-ratio: 16/9;
+}
+
+.video-frame iframe {
+    display: block;
+    /* Fixes white space below inline elements */
+    width: 100%;
+    height: 100%;
+}
+
+.video-decoration {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110%;
+    height: 120%;
+    border-radius: 50%;
+    border: 2px dashed rgba(99, 102, 241, 0.3);
+    pointer-events: none;
+    animation: rotate-circle 20s linear infinite;
+    z-index: 1;
+}
+
+.video-decoration::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 50%;
+    border: 2px dashed rgba(168, 85, 247, 0.3);
+    animation: rotate-circle 15s linear reverse infinite;
+}
+
+@keyframes rotate-circle {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@media (max-width: 992px) {
+    .teaching-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .teaching-highlights {
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .video-wrapper-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 3rem;
+        /* Extra padding for the orbit */
     }
 }
