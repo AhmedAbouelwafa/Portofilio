@@ -1399,28 +1399,20 @@ body.light-mode .progress-wrap {
     margin: 0;
 
     letter-spacing: -0.04em;
-    animation:
-        typing 3.5s steps(30, end) forwards;
+    animation: typing 3.5s steps(30, end) forwards;
     width: 0;
-    /* Start width 0 */
 }
 
 @media (max-width: 500px) {
     .typewriter-text {
         white-space: normal;
         border-right: none;
-        animation: fade-in 2s ease forwards !important;
-        width: 100% !important;
-    }
-
-    @keyframes fade-in {
-        from {
-            opacity: 0;
-        }
-
-        to {
-            opacity: 1;
-        }
+        width: auto !important;
+        /* Allow natural width */
+        opacity: 1 !important;
+        /* Force visible */
+        animation: none !important;
+        /* Disable complex animation on mobile to ensure visibility */
     }
 }
 
@@ -1431,51 +1423,5 @@ body.light-mode .progress-wrap {
 
     to {
         width: 100%
-    }
-
-    /* Note: overridden by inline style width */
-}
-
-@media (max-width: 500px) {
-    .typewriter-text {
-        white-space: normal;
-        /* Break on very small screens */
-        border-right: none;
-        /* Hide cursor if wrapping */
-        animation: fade-in 2s ease forwards;
-        /* Fallback animation */
-        max-width: 100%;
-    }
-
-    @keyframes fade-in {
-        from {
-            opacity: 0;
-        }
-
-        to {
-            opacity: 1;
-        }
-    }
-}
-
-@keyframes typing {
-    from {
-        max-width: 0
-    }
-
-    to {
-        max-width: 100%
-    }
-}
-
-@keyframes blink-caret {
-
-    from,
-    to {
-        border-color: transparent
-    }
-
-    50% {
-        border-color: var(--secondary);
     }
 }

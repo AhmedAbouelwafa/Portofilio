@@ -33,7 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileBtn = document.getElementById('mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
 
-    mobileBtn.addEventListener('click', () => {
+    mobileBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent document click from firing immediately
         if (navLinks.style.display === 'flex') {
             navLinks.style.display = 'none';
         } else {
@@ -46,6 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
             navLinks.style.background = 'var(--bg-color)';
             navLinks.style.padding = '2rem';
             navLinks.style.borderBottom = '1px solid var(--border-color)';
+        }
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (navLinks.style.display === 'flex' && !navLinks.contains(e.target) && !mobileBtn.contains(e.target)) {
+            navLinks.style.display = 'none';
         }
     });
 
