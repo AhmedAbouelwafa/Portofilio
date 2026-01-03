@@ -361,6 +361,209 @@ body.light-mode .navbar {
     transform: scale(1.02);
 }
 
+/* --- Hero Hover Interactions --- */
+
+/* Orbit Container */
+.orbit-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    /* Larger than the image */
+    height: 120%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    /* Let clicks pass through */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    animation: orbit-rotate 20s linear infinite;
+    z-index: 10;
+}
+
+.hero-image-container:hover .orbit-container {
+    opacity: 1;
+}
+
+.orbit-item {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    font-size: 1.2rem;
+    backdrop-filter: blur(5px);
+}
+
+/* Positioning Orbit Items (Pentagon Shape approximately) */
+.orbit-item.item-1 {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.orbit-item.item-2 {
+    top: 30%;
+    right: 0;
+    transform: translate(50%, -50%);
+}
+
+.orbit-item.item-3 {
+    bottom: 30%;
+    right: 0;
+    transform: translate(50%, 50%);
+}
+
+.orbit-item.item-4 {
+    bottom: 30%;
+    left: 0;
+    transform: translate(-50%, 50%);
+}
+
+.orbit-item.item-5 {
+    top: 30%;
+    left: 0;
+    transform: translate(-50%, -50%);
+}
+
+/* Counter-rotate items so icons stay upright */
+.orbit-item i {
+    animation: orbit-counter-rotate 20s linear infinite;
+}
+
+@keyframes orbit-rotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes orbit-counter-rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+/* Hover Cards (Status & Stats) */
+.hover-card {
+    position: absolute;
+    background: rgba(15, 23, 42, 0.85);
+    /* Darker glass */
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 12px;
+    width: 200px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 20;
+    pointer-events: none;
+    /* Optional: interactive or not? */
+}
+
+/* Specific Positions */
+.status-card {
+    top: 20%;
+    left: -140px;
+    transform: translateX(20px);
+}
+
+.stats-card {
+    bottom: 10%;
+    right: -150px;
+    transform: translateX(-20px);
+    width: 220px;
+}
+
+.hero-image-container:hover .hover-card {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* Card Content */
+.card-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.5rem;
+}
+
+.card-row i {
+    color: var(--secondary);
+    width: 16px;
+    text-align: center;
+}
+
+.stats-card h4 {
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 4px;
+}
+
+.stat-row {
+    margin-bottom: 0.5rem;
+}
+
+.stat-row span {
+    display: block;
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+    color: var(--text-secondary);
+}
+
+.stat-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.stat-bar .fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+/* Light Mode Overrides */
+body.light-mode .hover-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+body.light-mode .stat-row span {
+    color: #555;
+}
+
+
+/* Hide on Mobile */
+@media (max-width: 992px) {
+
+    .orbit-container,
+    .hover-card {
+        display: none !important;
+    }
+}
+
 /* Professional Animated Subtitle */
 /* --- Glitch Subtitle --- */
 .glitch-container {
