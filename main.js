@@ -298,4 +298,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     revealElements.forEach(el => revealObserver.observe(el));
+
+    // --- WhatsApp Chatbot Logic ---
+    const whatsappBtn = document.getElementById('whatsapp-btn');
+    const chatbotPopup = document.getElementById('chatbot-popup');
+    const closeChatBtn = document.getElementById('close-chat');
+
+    if (whatsappBtn && chatbotPopup) {
+        // Toggle Chatbot
+        whatsappBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent closing immediately
+            chatbotPopup.classList.toggle('active');
+        });
+
+        // Close Chatbot
+        closeChatBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            chatbotPopup.classList.remove('active');
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (chatbotPopup.classList.contains('active') &&
+                !chatbotPopup.contains(e.target) &&
+                !whatsappBtn.contains(e.target)) {
+                chatbotPopup.classList.remove('active');
+            }
+        });
+    }
 });
