@@ -334,4 +334,116 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- Code Editor Contact Form Logic ---
+    const compileBtn = document.getElementById('compile-btn');
+    const terminalDiv = document.getElementById('ide-terminal');
+    const terminalBody = document.getElementById('terminal-body');
+    const formInputs = {
+        name: document.getElementById('sender-name'),
+        email: document.getElementById('sender-email'),
+        message: document.getElementById('message-text')
+    };
+
+    if (compileBtn) {
+        compileBtn.addEventListener('click', async () => {
+            // 1. Get Values
+            const name = formInputs.name.value.trim();
+            const email = formInputs.email.value.trim();
+            const message = formInputs.message.value.trim();
+
+            // Open Terminal
+            terminalDiv.classList.add('active');
+            terminalBody.innerHTML = ''; // Clear previous
+
+            // Helper to type text
+            const log = (text, type = '') => {
+                const line = document.createElement('div');
+                line.className = `terminal-line ${type}`;
+                line.innerHTML = text;
+                terminalBody.appendChild(line);
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            };
+
+            const delay = (ms) => new Promise(res => setTimeout(res, ms));
+
+            // Start "Compilation" process
+            log(`<span class="path">C:\\Users\\Visitor\\Portfolio></span> dotnet run send-mail`);
+            await delay(600);
+
+            log('Build started...');
+            await delay(800);
+
+            // Simple Validation
+            if (!name || !email || !message) {
+                log('Build FAILED.', 'error');
+                log('<span>Error CS0029:</span> All fields (Properties) must be assigned a value.', 'error');
+                log(`<span class="path">C:\\Users\\Visitor\\Portfolio></span> <span class="cursor-blink">_</span>`);
+                return;
+            }
+
+            log('Build succeeded. 0 Errors, 0 Warnings.', 'success');
+            await delay(600);
+            log('Compiling ContactRequest.cs...', 'info');
+            await delay(500);
+            log('Connecting to SMTP Server...', 'info');
+            await delay(800);
+            log(`Authentication as ${email}... OK`, 'success');
+            await delay(600);
+            log('Sending TCP packet payload...', 'info');
+            await delay(1000);
+
+            // Send via EmailJS
+            const serviceID = "service_qbijzhf";
+            const templateID = "template_3atvwgj";
+
+            const templateParams = {
+                from_name: name,
+                from_email: email,
+                message: message,
+                to_name: "Ahmed Abouelwafa"
+            };
+
+            try {
+                // Actual Send
+                await emailjs.send(serviceID, templateID, templateParams);
+
+                log('Message Sent Successfully! Check your inbox.', 'success');
+                log(`<span class="path">C:\\Users\\Visitor\\Portfolio></span> <span class="cursor-blink">_</span>`);
+            } catch (error) {
+                log('Error sending message: ' + JSON.stringify(error), 'error');
+                log('Please check your EmailJS ServiceID/TemplateID/PublicKey.', 'error');
+                log(`<span class="path">C:\\Users\\Visitor\\Portfolio></span> <span class="cursor-blink">_</span>`);
+            }
+
+            // Optional: clear form
+            formInputs.message.value = '';
+        });
+    }
+
+
+    // --- Testimonials Swiper (Bento Style) ---
+    // Initialize Swiper
+    if (document.querySelector('.testimonialSwiper')) {
+        const swiper = new Swiper(".testimonialSwiper", {
+            slidesPerView: "auto",
+            spaceBetween: 30,
+            centeredSlides: true,
+            loop: true,
+            grabCursor: true,
+            autoplay: {
+                delay: 3500,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+    }
+
 });

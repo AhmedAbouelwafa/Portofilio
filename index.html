@@ -23,7 +23,17 @@
   <link rel="stylesheet" href="styles.css" />
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="icon" href="images/favicon.svg" />
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function () {
+      // https://dashboard.emailjs.com/admin/account
+      emailjs.init("oNt-MozsIhiDMeV5p");
+    })();
+  </script>
 </head>
 
 <body>
@@ -40,6 +50,7 @@
       <div class="nav-links">
         <a href="#home">Home</a>
         <a href="#about">About</a>
+        <a href="#services">Services</a>
         <a href="#experience">Experience</a>
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
@@ -139,6 +150,7 @@
         </div>
       </div>
     </section>
+
 
     <!-- About Section -->
     <section id="about" class="section about-section">
@@ -255,6 +267,7 @@
       </div>
     </section>
 
+
     <!-- Teaching Methodology Section -->
     <section id="teaching" class="section">
       <div class="container">
@@ -295,6 +308,7 @@
         </div>
       </div>
     </section>
+
 
     <!-- Experience Section -->
     <section id="experience" class="section">
@@ -391,6 +405,7 @@
       </div>
     </section>
 
+
     <!-- Education Section -->
     <section id="education" class="section">
       <div class="container">
@@ -478,6 +493,9 @@
         </div>
       </div>
     </section>
+
+
+
 
     <!-- Projects Section -->
     <section id="projects" class="section">
@@ -678,6 +696,157 @@
       </div>
     </section>
 
+    <!-- Services Section -->
+    <section id="services" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>My Services</h2>
+          <p>Solutions I provide to help your business grow</p>
+        </div>
+
+        <div class="services-container">
+          <!-- Service 1 -->
+          <div class="service-box reveal">
+            <div class="service-icon">
+              <i class="fas fa-code"></i>
+            </div>
+            <h3>Web App Development</h3>
+            <p>Building scalable, high-performance web applications using the latest .NET and Angular technologies. From
+              concept to deployment.</p>
+          </div>
+
+          <!-- Service 2 -->
+          <div class="service-box reveal">
+            <div class="service-icon">
+              <i class="fas fa-server"></i>
+            </div>
+            <h3>API Development</h3>
+            <p>Designing and implementing secure, documented, and efficient RESTful APIs following Clean Architecture
+              principles.</p>
+          </div>
+
+          <!-- Service 3 -->
+          <div class="service-box reveal">
+            <div class="service-icon">
+              <i class="fas fa-layer-group"></i>
+            </div>
+            <h3>Frontend Architecture</h3>
+            <p>Creating responsive, interactive, and maintainable user interfaces with complex state management and
+              modern UX patterns.</p>
+          </div>
+
+          <!-- Service 4 -->
+          <div class="service-box reveal">
+            <div class="service-icon">
+              <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <h3>Mentorship & Training</h3>
+            <p>Providing specialized training and technical guidance for individuals and teams in Full Stack .NET &
+              Angular development.</p>
+          </div>
+
+          <!-- Service 5 -->
+          <div class="service-box reveal">
+            <div class="service-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h3>E-Commerce Solutions</h3>
+            <p>Developing robust online stores with secure payment integration, inventory management, and admin
+              dashboards.</p>
+          </div>
+
+          <!-- Service 6 -->
+          <div class="service-box reveal">
+            <div class="service-icon">
+              <i class="fas fa-search-plus"></i>
+            </div>
+            <h3>Technical Consultation</h3>
+            <p>Auditing existing codebases, optimizing performance, and advising on architectural decisions for
+              long-term success.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Testimonials Section (Bento Grid Slider) -->
+    <section id="testimonials" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>Testimonials</h2>
+          <p>What people say about my work</p>
+        </div>
+
+        <!-- Swiper -->
+        <div class="swiper testimonialSwiper reveal">
+          <div class="swiper-wrapper" id="testimonial-wrapper">
+            <!-- Slides will be injected dynamically if possible, or we hardcode them since we know the images -->
+            <!-- Slide 1 -->
+            <div class="swiper-slide bento-slide bento-medium">
+              <div class="testimonial-card">
+                <img src="thanks/1.png" alt="Testimonial 1" class="testimonial-img" />
+              </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="swiper-slide bento-slide bento-large">
+              <div class="testimonial-card">
+                <img src="thanks/2.png" alt="Testimonial 2" class="testimonial-img" />
+              </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="swiper-slide bento-slide bento-small">
+              <div class="testimonial-card">
+                <img src="thanks/3.png" alt="Testimonial 3" class="testimonial-img" />
+              </div>
+            </div>
+            <!-- Slide 4 -->
+            <div class="swiper-slide bento-slide bento-wide">
+              <div class="testimonial-card">
+                <img src="thanks/4.png" alt="Testimonial 4" class="testimonial-img" />
+              </div>
+            </div>
+            <!-- Slide 5 -->
+            <div class="swiper-slide bento-slide bento-medium">
+              <div class="testimonial-card">
+                <img src="thanks/5.png" alt="Testimonial 5" class="testimonial-img" />
+              </div>
+            </div>
+            <!-- Slide 6 -->
+            <div class="swiper-slide bento-slide bento-large">
+              <div class="testimonial-card">
+                <img src="thanks/6.png" alt="Testimonial 6" class="testimonial-img" />
+              </div>
+            </div>
+            <!-- Slide 7 -->
+            <div class="swiper-slide bento-slide bento-small">
+              <div class="testimonial-card">
+                <img src="thanks/7.png" alt="Testimonial 7" class="testimonial-img" />
+              </div>
+            </div>
+            <!-- Slide 8 -->
+            <div class="swiper-slide bento-slide bento-wide">
+              <div class="testimonial-card">
+                <img src="thanks/8.png" alt="Testimonial 8" class="testimonial-img" />
+              </div>
+            </div>
+            <!-- Slide 9 -->
+            <div class="swiper-slide bento-slide bento-tall">
+              <div class="testimonial-card">
+                <img src="thanks/9.png" alt="Testimonial 9" class="testimonial-img" />
+              </div>
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+          <!-- Add Arrows -->
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </div>
+      </div>
+    </section>
+
+
+
+
     <!-- CTA Section -->
     <section class="section">
       <div class="container">
@@ -691,6 +860,7 @@
       </div>
     </section>
 
+
     <!-- Contact Section -->
     <section id="contact" class="section">
       <div class="container">
@@ -699,30 +869,38 @@
           <p>Find me on social platforms</p>
         </div>
 
-        <div class="contact-grid reveal">
-          <a href="https://github.com/AhmedAbouelwafa" target="_blank" class="btn-icon" data-tooltip="Explore my Code">
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="https://www.linkedin.com/in/ahmed-abou-el-wafa/" target="_blank" class="btn-icon"
-            data-tooltip="Connect professionally">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a href="https://www.youtube.com/@lolnetacademy" target="_blank" class="btn-icon"
-            data-tooltip="Watch my Tutorials">
-            <i class="fab fa-youtube"></i>
-          </a>
-          <a href="https://www.facebook.com/Abouelwafa.eg/" target="_blank" class="btn-icon"
-            data-tooltip="Follow Updates">
-            <i class="fab fa-facebook-f"></i>
-            <a href="mailto:ahmedabouelwafa@example.com" class="btn-icon" data-tooltip="Email Me">
+        <div class="contact-container reveal">
+
+
+          <!-- Social Links (kept as backup) -->
+          <div class="social-links-row">
+            <a href="https://github.com/AhmedAbouelwafa" target="_blank" class="btn-icon"
+              data-tooltip="Explore my Code">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/ahmed-abou-el-wafa/" target="_blank" class="btn-icon"
+              data-tooltip="Connect professionally">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="https://www.youtube.com/@lolnetacademy" target="_blank" class="btn-icon"
+              data-tooltip="Watch my Tutorials">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://www.facebook.com/Abouelwafa.eg/" target="_blank" class="btn-icon"
+              data-tooltip="Follow Updates">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="mailto:ahmedabouelwafa19@gmail.com" class="btn-icon" data-tooltip="Email Me">
               <i class="fas fa-envelope"></i>
             </a>
             <a href="https://linktr.ee/AhmedAbouelwafa" target="_blank" class="btn-icon" data-tooltip="All Links">
               <i class="fas fa-link"></i>
             </a>
+          </div>
         </div>
       </div>
     </section>
+
   </main>
 
   <footer>
@@ -769,6 +947,9 @@
     </div>
   </div>
 
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <!-- Custom JS -->
   <script src="main.js"></script>
 </body>
 
