@@ -1,439 +1,402 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Theme Toggle ---
+
+    // --- GSAP & ScrollTrigger Registration (if using ScrollTrigger, but we use IntersectionObserver mostly) ---
+    // gsap.registerPlugin(ScrollTrigger); 
+
+    // --- 1. THEME TOGGLE (Liquid Transition) ---
+    // --- 1. THEME TOGGLE (Liquid Transition) ---
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
+    const themeOverlay = document.getElementById('theme-transition-overlay');
     const icon = themeToggle.querySelector('i');
 
+    // Init Theme
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
+    // Default to 'light' if no preference, or if explicitly 'light'
+    if (!savedTheme || savedTheme === 'light') {
         body.classList.add('light-mode');
         icon.classList.remove('fa-moon');
         icon.classList.add('fa-sun');
+    } else {
+        // Explicitly dark
+        body.classList.remove('light-mode');
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
     }
 
-    themeToggle.addEventListener('click', () => {
-        body.classList.toggle('light-mode');
+    themeToggle.addEventListener('click', (e) => {
+        // Prevent multiple clicks during animation
+        if (gsap.isTweening(themeOverlay)) return;
 
-        if (body.classList.contains('light-mode')) {
-            localStorage.setItem('theme', 'light');
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
-        } else {
-            localStorage.setItem('theme', 'dark');
-            icon.classList.remove('fa-sun');
-            icon.classList.add('fa-moon');
-        }
+        // Get button position
+        const rect = themeToggle.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
 
-        // Update trail color immediately
-        updateTrailColor();
+        // Determine Target Theme & Color
+        const isCurrentlyLight = body.classList.contains('light-mode');
+        // If currently Light (going Dark), overlay should be Dark (#0f172a)
+        // If currently Dark (going Light), overlay should be Light (#f8fafc)
+        const overlayColor = isCurrentlyLight ? '#0f172a' : '#f8fafc';
+
+        themeOverlay.style.backgroundColor = overlayColor;
+
+        const tl = gsap.timeline();
+
+        // 1. Expand circle to cover screen
+        tl.set(themeOverlay, {
+            top: y,
+            left: x,
+            xPercent: -50,
+            yPercent: -50,
+            width: '1px',
+            height: '1px',
+            opacity: 1,
+            scale: 1,
+            borderRadius: '50%'
+        })
+            .to(themeOverlay, {
+                scale: Math.max(window.innerWidth, window.innerHeight) * 2.5, // Ensure coverage
+                duration: 1,
+                ease: "circ.inOut", // Sharper feeling
+            })
+            .call(() => {
+                // TOGGLE THEME AT MIDPOINT (Full Coverage)
+                body.classList.toggle('light-mode');
+                if (body.classList.contains('light-mode')) {
+                    localStorage.setItem('theme', 'light');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    localStorage.setItem('theme', 'dark');
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            })
+            .to(themeOverlay, {
+                opacity: 0,
+                duration: 0.5,
+                ease: "power2.out"
+            })
+            .set(themeOverlay, { scale: 0 }); // Reset
     });
 
-    // --- Mobile Menu ---
-    // (Simplistic implementation)
-    const mobileBtn = document.getElementById('mobile-menu-btn');
-    const navLinks = document.querySelector('.nav-links');
+    // --- 2. CUSTOM CURSOR (Smoother) ---
+    const cursorDot = document.getElementById('cursor-dot');
+    const cursorOutline = document.getElementById('cursor-outline');
 
-    mobileBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent document click from firing immediately
-        if (navLinks.style.display === 'flex') {
-            navLinks.style.display = 'none';
-        } else {
-            navLinks.style.display = 'flex';
-            navLinks.style.flexDirection = 'column';
-            navLinks.style.position = 'absolute';
-            navLinks.style.top = '80px';
-            navLinks.style.left = '0';
-            navLinks.style.width = '100%';
-            navLinks.style.background = 'var(--bg-color)';
-            navLinks.style.padding = '2rem';
-            navLinks.style.borderBottom = '1px solid var(--border-color)';
-        }
-    });
+    if (window.matchMedia("(pointer: fine)").matches) {
 
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', (e) => {
-        if (navLinks.style.display === 'flex' && !navLinks.contains(e.target) && !mobileBtn.contains(e.target)) {
-            navLinks.style.display = 'none';
-        }
-    });
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
 
+        // Track mouse position
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
 
-    // --- Mouse Effects ---
-    // Remove old cursor glow element from DOM if exists
-    const oldCursor = document.getElementById('cursor-glow');
-    if (oldCursor) oldCursor.remove();
-
-    // Create new custom cursor
-    const customCursor = document.createElement('div');
-    customCursor.classList.add('custom-cursor');
-    document.body.appendChild(customCursor);
-
-    const canvas = document.getElementById('trail-canvas');
-    const ctx = canvas.getContext('2d');
-
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-
-    let points = [];
-    let mouse = { x: 0, y: 0 };
-
-    // Resize handling
-    const resizeObserver = new ResizeObserver(() => {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-    });
-    resizeObserver.observe(document.body);
-
-    // Initial size
-    canvas.width = width;
-    canvas.height = height;
-
-    // Track mouse
-    document.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-
-        // Move Custom Cursor
-        customCursor.style.left = `${mouse.x}px`;
-        customCursor.style.top = `${mouse.y}px`;
-
-        // Add point to trail
-        points.push({
-            x: mouse.x,
-            y: mouse.y,
-            age: 0
+            // Dot follows instantly (Native feel)
+            gsap.set(cursorDot, { x: mouseX, y: mouseY });
         });
-    });
 
-    // Cursor Hover Effect
-    document.querySelectorAll('a, button, .service-card, .timeline-item').forEach(el => {
-        el.addEventListener('mouseenter', () => customCursor.classList.add('hovered'));
-        el.addEventListener('mouseleave', () => customCursor.classList.remove('hovered'));
-    });
+        // Outline uses a simple loop for buttery smooth lag
+        // Using gsap.ticker for better performance than setInterval or recursive tween
+        gsap.ticker.add(() => {
+            const dt = 1.0 - Math.pow(1.0 - 0.15, gsap.ticker.deltaRatio());
 
-    let trailColor = 'rgba(99, 102, 241, 0.5)'; // Default Primary
+            const currentX = parseFloat(gsap.getProperty(cursorOutline, "x")) || 0;
+            const currentY = parseFloat(gsap.getProperty(cursorOutline, "y")) || 0;
 
-    function updateTrailColor() {
-        const computedStyle = getComputedStyle(document.body);
-        // We can grab the primary color variable
-        // However, converting it to RGB for canvas might be tricky if it's hex
-        // Let's just switch based on class
-        if (document.body.classList.contains('light-mode')) {
-            trailColor = 'rgba(79, 70, 229, 0.5)'; // Indigo 600
-        } else {
-            trailColor = 'rgba(99, 102, 241, 0.5)'; // Indigo 500
-        }
-    }
+            const dx = mouseX - currentX;
+            const dy = mouseY - currentY;
 
-    updateTrailColor();
-
-    function animateTrail() {
-        ctx.clearRect(0, 0, width, height);
-
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-
-        if (points.length > 1) {
-            ctx.beginPath();
-            ctx.moveTo(points[0].x, points[0].y);
-
-            for (let i = 1; i < points.length; i++) {
-                // Draw quadratic curve for smoothness
-                // const xc = (points[i].x + points[i + 1].x) / 2;
-                // const yc = (points[i].y + points[i + 1].y) / 2;
-                // ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
-
-                // Simple line for now
-                ctx.lineTo(points[i].x, points[i].y);
-            }
-            // stroke whole path? No, we need fading segments. 
-            // Actually drawing segments individually allows varying opacity.
-        }
-
-        // approach 2: Draw individual segments to handle fading
-        for (let i = 0; i < points.length - 1; i++) {
-            const p1 = points[i];
-            const p2 = points[i + 1];
-
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-
-            // Calculate opacity based on age
-            // Max age = 50 frames
-            const opacity = 1 - (p1.age / 40);
-
-            if (opacity <= 0) continue;
-
-            ctx.strokeStyle = trailColor.replace('0.5)', `${opacity})`).replace('1)', `${opacity})`);
-            ctx.lineWidth = 3 * opacity; // shrink width too
-            ctx.stroke();
-        }
-
-        // Update points
-        for (let i = 0; i < points.length; i++) {
-            points[i].age++;
-        }
-
-        // Remove old points
-        points = points.filter(p => p.age < 40);
-
-        requestAnimationFrame(animateTrail);
-    }
-
-    animateTrail();
-
-    // --- Scroll Progress Button ---
-    const progressPath = document.querySelector('.progress-wrap path');
-    const pathLength = progressPath.getTotalLength();
-
-    progressPath.style.transition = progressPath.style.WebkitTransition = 'none';
-    progressPath.style.strokeDasharray = pathLength + ' ' + pathLength;
-    progressPath.style.strokeDashoffset = pathLength;
-    progressPath.getBoundingClientRect();
-    progressPath.style.transition = progressPath.style.WebkitTransition = 'stroke-dashoffset 10ms linear';
-
-    const updateProgress = function () {
-        const scroll = window.scrollY || window.pageYOffset;
-        const height = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = pathLength - (scroll * pathLength / height);
-        progressPath.style.strokeDashoffset = progress;
-    }
-
-    updateProgress();
-    window.addEventListener('scroll', updateProgress);
-
-    const offset = 50;
-    const duration = 550;
-
-    window.addEventListener('scroll', function () {
-        if (window.scrollY > offset) {
-            document.querySelector('.progress-wrap').classList.add('active-progress');
-        } else {
-            document.querySelector('.progress-wrap').classList.remove('active-progress');
-        }
-    });
-
-    document.querySelector('.progress-wrap').addEventListener('click', function (event) {
-        event.preventDefault();
-
-        // Custom Smooth Scroll to Top
-        const startPosition = window.pageYOffset;
-        const distance = -startPosition; // Target is 0, so distance is negative start
-        let startTime = null;
-        const duration = 1500; // Slower duration for long web pages (1.5s)
-
-        function animation(currentTime) {
-            if (startTime === null) startTime = currentTime;
-            const timeElapsed = currentTime - startTime;
-            const run = ease(timeElapsed, startPosition, distance, duration);
-            window.scrollTo(0, run);
-            if (timeElapsed < duration) requestAnimationFrame(animation);
-        }
-
-        function ease(t, b, c, d) {
-            t /= d / 2;
-            if (t < 1) return c / 2 * t * t * t + b;
-            t -= 2;
-            return c / 2 * (t * t * t + 2) + b;
-        }
-
-        requestAnimationFrame(animation);
-        return false;
-    });
-
-    // --- Smooth Scroll & Click Animation ---
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-
-            e.preventDefault(); // Prevent default instant jump
-
-            // Add animation if it's a nav link
-            if (this.closest('.nav-links')) {
-                this.classList.add('click-anim');
-                setTimeout(() => {
-                    this.classList.remove('click-anim');
-                }, 300);
-            }
-
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                const headerOffset = 100;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const startPosition = window.pageYOffset;
-                const offsetPosition = elementPosition + startPosition - headerOffset;
-                const distance = offsetPosition - startPosition;
-
-                let startTime = null;
-                const duration = 1000;
-
-                function animation(currentTime) {
-                    if (startTime === null) startTime = currentTime;
-                    const timeElapsed = currentTime - startTime;
-                    const run = ease(timeElapsed, startPosition, distance, duration);
-                    window.scrollTo(0, run);
-                    if (timeElapsed < duration) requestAnimationFrame(animation);
-                }
-
-                function ease(t, b, c, d) {
-                    t /= d / 2;
-                    if (t < 1) return c / 2 * t * t * t + b;
-                    t -= 2;
-                    return c / 2 * (t * t * t + 2) + b;
-                }
-
-                requestAnimationFrame(animation);
+            if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+                gsap.set(cursorOutline, {
+                    x: currentX + dx * 0.15, // 0.15 = lag factor
+                    y: currentY + dy * 0.15
+                });
             }
         });
-    });
 
-    // --- Scroll Reveal Logic ---
-    const revealElements = document.querySelectorAll('.reveal');
-    const revealObserver = new IntersectionObserver((entries, observer) => {
+        // Hover Effects
+        const hoverTargets = document.querySelectorAll('a, button, .service-card, .glass-testimonial-card, .btn-icon, .theme-toggle-btn');
+
+        hoverTargets.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                const isProject = el.classList.contains('service-card');
+                cursorOutline.classList.add('cursor-hover');
+
+                if (isProject) {
+                    cursorOutline.classList.add('project-hover'); // Special class for text
+                    cursorOutline.innerHTML = '<span class="cursor-text">VIEW</span>';
+                } else {
+                    cursorOutline.innerHTML = '';
+                }
+            });
+
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.classList.remove('cursor-hover');
+                cursorOutline.classList.remove('project-hover');
+                cursorOutline.innerHTML = '';
+            });
+        });
+    }
+
+
+    // --- 3. ABOUT ME: VS CODE TYPEWRITER ---
+    const aboutSection = document.getElementById('about');
+    const codeContainer = document.getElementById('code-content-container');
+    const sourceTemplate = document.getElementById('profile-cs-source');
+    const runBtn = document.getElementById('run-profile-btn');
+    const terminal = document.getElementById('about-terminal');
+    const terminalContent = document.getElementById('about-terminal-content');
+
+    let hasTyped = false;
+
+    // Build the DOM from string, then type it
+    function typeWriterEffect() {
+        if (hasTyped) return;
+        hasTyped = true;
+
+        // Parse the HTML from template
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = sourceTemplate.innerHTML.trim();
+
+        // Clear container
+        codeContainer.innerHTML = '';
+
+        const fullHTML = sourceTemplate.innerHTML;
+        // Hacky but effective for "Code" look:
+        // Hybrid: We will create the structure, hide text, type text.
+
+        codeContainer.innerHTML = '';
+
+        // Split by newlines (assuming the template is formatted with newlines)
+        const rawLines = fullHTML.trim().split('\n');
+
+        let lineIndex = 0;
+
+        function typeLine() {
+            if (lineIndex >= rawLines.length) return;
+
+            const lineStr = rawLines[lineIndex].trim();
+            const div = document.createElement('div');
+            div.className = 'line indent'; // defaulting to indent for simplicity, or detect spacing
+
+            div.innerHTML = lineStr; // Set full HTML
+            div.style.opacity = 0;
+            div.style.transform = 'translateY(5px)';
+            codeContainer.appendChild(div);
+
+            gsap.to(div, {
+                opacity: 1,
+                y: 0,
+                duration: 0.3,
+                onComplete: () => {
+                    lineIndex++;
+                    setTimeout(typeLine, 100); // 100ms delay between lines
+                }
+            });
+        }
+
+        typeLine();
+    }
+
+    // Trigger on Scroll
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                observer.unobserve(entry.target); // Trigger once
+                typeWriterEffect();
+                observer.unobserve(aboutSection);
             }
         });
-    }, {
-        threshold: 0.15,
-        rootMargin: "0px 0px -50px 0px"
-    });
+    }, { threshold: 0.3 });
 
-    revealElements.forEach(el => revealObserver.observe(el));
+    if (aboutSection) observer.observe(aboutSection);
 
-    // --- WhatsApp Chatbot Logic ---
-    const whatsappBtn = document.getElementById('whatsapp-btn');
-    const chatbotPopup = document.getElementById('chatbot-popup');
-    const closeChatBtn = document.getElementById('close-chat');
+    // Run Button Logic
+    if (runBtn) {
+        runBtn.addEventListener('click', () => {
+            terminal.classList.add('active');
+            terminalContent.innerHTML = '';
 
-    if (whatsappBtn && chatbotPopup) {
-        // Toggle Chatbot
-        whatsappBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent closing immediately
-            chatbotPopup.classList.toggle('active');
-        });
+            const log = (msg, cls = '') => {
+                const div = document.createElement('div');
+                div.className = `terminal-row ${cls}`;
+                div.textContent = msg;
+                terminalContent.appendChild(div);
+                terminalContent.scrollTop = terminalContent.scrollHeight;
+            };
 
-        // Close Chatbot
-        closeChatBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            chatbotPopup.classList.remove('active');
-        });
+            log('> dotnet run');
 
-        // Close when clicking outside
-        document.addEventListener('click', (e) => {
-            if (chatbotPopup.classList.contains('active') &&
-                !chatbotPopup.contains(e.target) &&
-                !whatsappBtn.contains(e.target)) {
-                chatbotPopup.classList.remove('active');
-            }
+            setTimeout(() => {
+                log('Build succeeded.', 'terminal-success');
+
+                setTimeout(() => {
+                    // The Output
+                    const response = {
+                        name: "Ahmed Abouelwafa",
+                        title: "Full Stack .NET & Angular Developer",
+                        location: "Cairo, Egypt",
+                        status: "Open for Work",
+                        quote: "Let's code something amazing together!"
+                    };
+
+                    const pre = document.createElement('pre');
+                    pre.className = 'terminal-row terminal-success';
+                    pre.style.fontFamily = 'monospace';
+                    pre.textContent = JSON.stringify(response, null, 2);
+                    terminalContent.appendChild(pre);
+                    terminalContent.scrollTop = terminalContent.scrollHeight;
+
+                }, 600);
+
+            }, 600);
         });
     }
 
-    // --- Code Editor Contact Form Logic ---
-    const compileBtn = document.getElementById('compile-btn');
-    const terminalDiv = document.getElementById('ide-terminal');
-    const terminalBody = document.getElementById('terminal-body');
-    const formInputs = {
-        name: document.getElementById('sender-name'),
-        email: document.getElementById('sender-email'),
-        message: document.getElementById('message-text')
+
+    // --- 4. PROJECT MODAL & DATA ---
+    const projectsData = {
+        "aseeralkotb": {
+            title: "AseerElKotb - Bookstore App",
+            tags: ["ASP.NET Core", "Angular", "Clean Architecture", "CQRS"],
+            challenge: "Creating a scalable e-commerce platform that handles complex inventory management and integrates modern AI features for user engagement, all while maintaining high performance.",
+            decision: "Chose Clean Architecture with CQRS to separate read/write concerns, improving scalability. Integrated OpenAI for RAG-based book recommendations to enhance user experience beyond simple search.",
+            implementation: "Backend: .NET 8 Web API, MediatR, EF Core. Frontend: Angular 16+ with standalone components. Features include realtime notifications (SignalR) and secure payment gateway integration.",
+            result: "Achieved a 40% improvement in query response times compared to traditional layered architecture. The AI recommendation system increased session duration by 25%.",
+            github: "https://github.com/AhmedAbouelwafa/AseerElKotb",
+            live: "https://aseeralkotb.vercel.app/"
+        },
+        "booking": {
+            title: "Service Booking System",
+            tags: [".NET 6", "Angular", "Scheduler", "Admin Panel"],
+            challenge: "Businesses needed a flexible way to manage appointment slots, handle double-booking prevention, and manage staff schedules dynamically.",
+            decision: "Implemented a custom scheduling algorithm rather than off-the-shelf libraries to allow for complex business rules (buffers, holidays, specific staff availability).",
+            implementation: "Built a robust REST API for managing slots. Frontend uses a custom calendar component. Role-based auth (JWT) ensures secure admin access.",
+            result: "Reduced booking conflicts to near zero. Simplified the administrative workflow, saving managers approx. 5 hours a week.",
+            github: "https://github.com/AhmedAbouelwafa/ServiceBookingSystem",
+            live: "#"
+        },
+        "jalabizo": {
+            title: "JALABIZO - Fashion Store",
+            tags: ["Full Stack", "AI Virtual Try-On", "E-Commerce"],
+            challenge: "Online fashion suffers from high return rates due to fit issues. The goal was to provide a virtual try-on experience.",
+            decision: "Leveraged generative AI models to overlay clothing items onto user-uploaded photos, providing a realistic preview.",
+            implementation: "Integrated python-based AI microservices communicating with the .NET Core backend via message queues. Angular frontend handles image manipulation.",
+            result: "Increased conversion rates and engaged users with the interactive try-on feature.",
+            github: "https://github.com/AhmedAbouelwafa/JALABIZO",
+            live: "#"
+        },
+        "ecompany": {
+            title: "ECompanyHub",
+            tags: ["Enterprise", "C#", "Backend"],
+            challenge: "Managing disparate company data sources (HR, Inventory, Sales) in a unified system.",
+            decision: "Focused on a centralized API gateway approach to aggregate data from various services.",
+            implementation: "Pure Backend solution using C# and .NET Core, focusing on API performance, caching (Redis), and background jobs (Hangfire).",
+            result: "Streamlined data access for external frontend clients and mobile apps.",
+            github: "https://github.com/AhmedAbouelwafa/EcompanyHub_BackEnd",
+            live: "#"
+        },
+        "huroof": {
+            title: "Huroof Extension",
+            tags: ["JavaScript", "Chrome Extension", "Productivity"],
+            challenge: "Bilingual users often type in the wrong keyboard layout (e.g., typing Arabic when English is selected).",
+            decision: "Created a pure client-side browser extension to map characters instantly without network calls for privacy and speed.",
+            implementation: "DOM manipulation and Key event listeners. Smart mapping algorithm to convert 'ghl' to 'فعل' etc.",
+            result: "500+ Active users. Saves users the frustration of re-typing messages.",
+            github: "https://github.com/AhmedAbouelwafa/Huroof_Extension",
+            live: "#"
+        },
+        "pcbundle": {
+            title: "PCBundle Store",
+            tags: ["HTML/CSS", "Vanilla JS", "Basics"],
+            challenge: "Creating a lightweight, fast-loading store for hardware bundles without heavy framework overhead.",
+            decision: "Opted for Vanilla JS and CSS to ensure maximum performance and learn core web fundamentals.",
+            implementation: "Custom cart logic using LocalStorage. Responsive grid layout using CSS Grid.",
+            result: "100/100 Google Lighthouse score for performance.",
+            github: "https://github.com/AhmedAbouelwafa/PCBundle_Store",
+            live: "#"
+        }
     };
 
-    if (compileBtn) {
-        compileBtn.addEventListener('click', async () => {
-            // 1. Get Values
-            const name = formInputs.name.value.trim();
-            const email = formInputs.email.value.trim();
-            const message = formInputs.message.value.trim();
+    const modal = document.getElementById('project-modal');
+    const modalClose = document.getElementById('modal-close-btn');
+    const modalTitle = document.getElementById('modal-title');
+    const modalTags = document.getElementById('modal-tags');
+    const modalChallenge = document.getElementById('modal-challenge');
+    const modalDecision = document.getElementById('modal-decision');
+    const modalImplementation = document.getElementById('modal-implementation');
+    const modalResult = document.getElementById('modal-result');
+    const modalGithub = document.getElementById('modal-github-btn');
+    const modalLive = document.getElementById('modal-live-btn');
 
-            // Open Terminal
-            terminalDiv.classList.add('active');
-            terminalBody.innerHTML = ''; // Clear previous
+    document.querySelectorAll('.service-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault();
+            const projectId = card.getAttribute('data-project-id');
+            const data = projectsData[projectId];
 
-            // Helper to type text
-            const log = (text, type = '') => {
-                const line = document.createElement('div');
-                line.className = `terminal-line ${type}`;
-                line.innerHTML = text;
-                terminalBody.appendChild(line);
-                terminalBody.scrollTop = terminalBody.scrollHeight;
-            };
+            if (data) {
+                // Populate Modal
+                modalTitle.textContent = data.title;
+                modalTags.innerHTML = data.tags.map(tag => `<span>${tag}</span>`).join('');
+                modalChallenge.textContent = data.challenge;
+                modalDecision.textContent = data.decision;
+                modalImplementation.textContent = data.implementation;
+                modalResult.textContent = data.result;
 
-            const delay = (ms) => new Promise(res => setTimeout(res, ms));
+                modalGithub.href = data.github;
+                if (data.live && data.live !== '#') {
+                    modalLive.style.display = 'inline-flex';
+                    modalLive.href = data.live;
+                } else {
+                    modalLive.style.display = 'none';
+                }
 
-            // Start "Compilation" process
-            log(`<span class="path">C:\\Users\\Visitor\\Portfolio></span> dotnet run send-mail`);
-            await delay(600);
-
-            log('Build started...');
-            await delay(800);
-
-            // Simple Validation
-            if (!name || !email || !message) {
-                log('Build FAILED.', 'error');
-                log('<span>Error CS0029:</span> All fields (Properties) must be assigned a value.', 'error');
-                log(`<span class="path">C:\\Users\\Visitor\\Portfolio></span> <span class="cursor-blink">_</span>`);
-                return;
+                // Open Modal
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Lock Scroll
             }
+        });
+    });
 
-            log('Build succeeded. 0 Errors, 0 Warnings.', 'success');
-            await delay(600);
-            log('Compiling ContactRequest.cs...', 'info');
-            await delay(500);
-            log('Connecting to SMTP Server...', 'info');
-            await delay(800);
-            log(`Authentication as ${email}... OK`, 'success');
-            await delay(600);
-            log('Sending TCP packet payload...', 'info');
-            await delay(1000);
+    // Close Modal
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 
-            // Send via EmailJS
-            const serviceID = "service_qbijzhf";
-            const templateID = "template_3atvwgj";
-
-            const templateParams = {
-                from_name: name,
-                from_email: email,
-                message: message,
-                to_name: "Ahmed Abouelwafa"
-            };
-
-            try {
-                // Actual Send
-                await emailjs.send(serviceID, templateID, templateParams);
-
-                log('Message Sent Successfully! Check your inbox.', 'success');
-                log(`<span class="path">C:\\Users\\Visitor\\Portfolio></span> <span class="cursor-blink">_</span>`);
-            } catch (error) {
-                log('Error sending message: ' + JSON.stringify(error), 'error');
-                log('Please check your EmailJS ServiceID/TemplateID/PublicKey.', 'error');
-                log(`<span class="path">C:\\Users\\Visitor\\Portfolio></span> <span class="cursor-blink">_</span>`);
-            }
-
-            // Optional: clear form
-            formInputs.message.value = '';
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
         });
     }
 
 
-    // --- Testimonials Swiper (Bento Style) ---
-    // Initialize Swiper
+    // --- 5. SWIPER (Testimonials) ---
     if (document.querySelector('.testimonialSwiper')) {
         const swiper = new Swiper(".testimonialSwiper", {
-            slidesPerView: "auto",
+            slidesPerView: 1,
             spaceBetween: 30,
             centeredSlides: true,
             loop: true,
             grabCursor: true,
             autoplay: {
-                delay: 3500,
+                delay: 4000,
                 disableOnInteraction: false,
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 30
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 40
+                }
             },
             pagination: {
                 el: ".swiper-pagination",
@@ -446,4 +409,54 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- 6. Original Scroll Reveal ---
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                if (observer) observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // --- 7. Mobile Menu ---
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    if (mobileBtn && navLinks) {
+        mobileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '80px';
+                navLinks.style.left = '0';
+                navLinks.style.width = '100%';
+                navLinks.style.background = 'var(--bg-color)';
+                navLinks.style.padding = '2rem';
+                navLinks.style.borderBottom = '1px solid var(--border-color)';
+            }
+        });
+    }
+
+    // --- 8. Back to Top ---
+    const progressWrap = document.getElementById('progress-wrap');
+    if (progressWrap) {
+        progressWrap.addEventListener('click', (event) => {
+            event.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                progressWrap.classList.add('active-progress');
+            } else {
+                progressWrap.classList.remove('active-progress');
+            }
+        });
+    }
 });

@@ -26,6 +26,8 @@
   <!-- Swiper CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="icon" href="images/favicon.svg" />
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <!-- EmailJS SDK -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script type="text/javascript">
@@ -37,9 +39,13 @@
 </head>
 
 <body>
+  <!-- Theme Transition Overlay -->
+  <div id="theme-transition-overlay" class="theme-transition-overlay"></div>
+
   <!-- Mouse Cursor Effects -->
-  <div class="cursor-glow" id="cursor-glow"></div>
-  <canvas id="trail-canvas"></canvas>
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-outline" id="cursor-outline"></div>
+  <canvas id="trail-canvas" style="display:none;"></canvas>
 
   <!-- Navigation -->
   <nav class="navbar">
@@ -165,7 +171,7 @@
             <span class="section-badge">Who I Am</span>
 
             <!-- VS Code Editor Look -->
-            <div class="code-editor-window">
+            <div class="code-editor-window" id="about-code-editor">
               <div class="editor-header">
                 <div class="window-controls">
                   <span class="control red"></span>
@@ -174,34 +180,42 @@
                 </div>
                 <div class="file-name">Profile.cs</div>
               </div>
-              <div class="editor-body">
-                <div class="line"><span class="keyword">public class</span> <span
-                    class="class-name">AhmedAbouelwafa</span> : <span class="interface">IDeveloper</span>, <span
-                    class="interface">IInstructor</span></div>
-                <div class="line">{</div>
-                <div class="line indent"><span class="keyword">public string</span> Location => <span
-                    class="string">"Cairo, Egypt"</span>;</div>
-                <div class="line indent"><span class="keyword">public string</span> CurrentRole => <span
-                    class="string">"Full Stack .NET Engineer"</span>;</div>
-                <div class="line indent"><span class="keyword">public</span> <span
-                    class="class-name">List</span>&lt;<span class="string">string</span>&gt; CoreValues = <span
-                    class="keyword">new</span>() { <span class="string">"Clean Code"</span>, <span
-                    class="string">"DDD"</span>, <span class="string">"Mentorship"</span> };</div>
-                <div class="line"></div>
-                <div class="line indent"><span class="keyword">public void</span> <span
-                    class="function">Introduce</span>()</div>
-                <div class="line indent">{</div>
-                <div class="line double-indent"><span class="comment">// Passionate about simplifying complex
-                    concepts.</span></div>
-                <div class="line double-indent">Console.WriteLine(<span class="string">"Building robust, scalable
-                    systems is my craft."</span>);</div>
-                <div class="line double-indent">Console.WriteLine(<span class="string">"Helping students master .NET &
-                    Angular is my mission."</span>);</div>
-                <div class="line double-indent"><span class="keyword">return</span> <span class="string">"Let's code
-                    something amazing together!"</span>;</div>
-                <div class="line indent">}</div>
-                <div class="line">}</div>
+              <div class="editor-body" id="code-content-container">
+                <!-- Content injected by JS -->
               </div>
+              <div class="editor-footer-bar">
+                <button id="run-profile-btn" class="run-btn"><i class="fas fa-play"></i> Run</button>
+              </div>
+
+              <!-- Output Terminal -->
+              <div id="about-terminal" class="about-terminal">
+                <div class="terminal-header">Terminal</div>
+                <div class="terminal-content" id="about-terminal-content"></div>
+              </div>
+
+              <!-- Hidden Source for Typewriter -->
+              <template id="profile-cs-source">
+                <span class="keyword">public class</span> <span class="class-name">AhmedAbouelwafa</span> : <span
+                  class="interface">IDeveloper</span>, <span class="interface">IInstructor</span>
+                {
+                <span class="keyword">public string</span> Location => <span class="string">"Cairo, Egypt"</span>;
+                <span class="keyword">public string</span> CurrentRole => <span class="string">"Full Stack .NET
+                  Engineer"</span>;
+                <span class="keyword">public</span> <span class="class-name">List</span>&lt;<span
+                  class="string">string</span>&gt; CoreValues = <span class="keyword">new</span>() { <span
+                  class="string">"Clean Code"</span>, <span class="string">"DDD"</span>, <span
+                  class="string">"Mentorship"</span> };
+
+                <span class="keyword">public void</span> <span class="function">Introduce</span>()
+                {
+                <span class="comment">// Passionate about simplifying complex concepts.</span>
+                Console.WriteLine(<span class="string">"Building robust, scalable systems is my craft."</span>);
+                Console.WriteLine(<span class="string">"Helping students master .NET & Angular is my mission."</span>);
+                <span class="keyword">return</span> <span class="string">"Let's code something amazing
+                  together!"</span>;
+                }
+                }
+              </template>
             </div>
 
             <!-- Tech Stack Categories with Modern Cards -->
@@ -502,12 +516,16 @@
       <div class="container">
         <div class="section-header reveal">
           <h2>Featured Projects</h2>
-          <p>Showcasing my technical capabilities</p>
+          <div class="take-a-look-container">
+            <span class="arrow-look right">➜</span>
+            <p class="glowing-arabic">اديها بصة</p>
+            <span class="arrow-look left">➜</span>
+          </div>
         </div>
 
         <div class="services-grid">
           <!-- Project 1 -->
-          <div class="service-card">
+          <div class="service-card" data-project-id="aseeralkotb">
             <div class="category-tag">Full Stack</div>
             <div class="card-image-placeholder" style="background: linear-gradient(135deg, #4f46e5, #ec4899)"></div>
             <div class="card-body">
@@ -542,7 +560,7 @@
           </div>
 
           <!-- Project 2: ServiceBookingSystem -->
-          <div class="service-card">
+          <div class="service-card" data-project-id="booking">
             <div class="category-tag">Booking System</div>
             <div class="card-image-placeholder" style="background: linear-gradient(135deg, #3b82f6, #06b6d4)"></div>
             <div class="card-body">
@@ -572,7 +590,7 @@
           </div>
 
           <!-- Project 3: JALABIZO -->
-          <div class="service-card reveal">
+          <div class="service-card reveal" data-project-id="jalabizo">
             <div class="category-tag">Fashion Tech</div>
             <div class="card-image-placeholder" style="background: linear-gradient(135deg, #f43f5e, #be123c)"></div>
             <div class="card-body">
@@ -602,7 +620,7 @@
           </div>
 
           <!-- Project 4: ECompanyHub -->
-          <div class="service-card reveal">
+          <div class="service-card reveal" data-project-id="ecompany">
             <div class="category-tag">Enterprise</div>
             <div class="card-image-placeholder" style="background: linear-gradient(135deg, #0ea5e9, #10b981)"></div>
             <div class="card-body">
@@ -634,7 +652,7 @@
           </div>
 
           <!-- Project 3 -->
-          <div class="service-card">
+          <div class="service-card" data-project-id="huroof">
             <div class="category-tag">Extension</div>
             <div class="card-image-placeholder" style="background: linear-gradient(135deg, #f59e0b, #ef4444)"></div>
             <div class="card-body">
@@ -665,7 +683,7 @@
           </div>
 
           <!-- Project 4 -->
-          <div class="service-card">
+          <div class="service-card" data-project-id="pcbundle">
             <div class="category-tag">E-Commerce</div>
             <div class="card-image-placeholder" style="background: linear-gradient(135deg, #8b5cf6, #d946ef)"></div>
             <div class="card-body">
@@ -783,56 +801,47 @@
             <!-- Slides will be injected dynamically if possible, or we hardcode them since we know the images -->
             <!-- Slide 1 -->
             <div class="swiper-slide bento-slide bento-medium">
-              <div class="testimonial-card">
-                <img src="thanks/1.png" alt="Testimonial 1" class="testimonial-img" />
+              <div class="glass-testimonial-card floating-card">
+                <div class="testimonial-avatar"><i class="fas fa-user-tie"></i></div>
+                <div class="testimonial-content">
+                  <i class="fas fa-quote-left quote-icon"></i>
+                  <p class="testimonial-text">"Ahmed is one of the most dedicated developers I've worked with. His
+                    understanding of Clean Architecture transformed our codebase."</p>
+                  <div class="testimonial-author">
+                    <h4>Sarah Johnson</h4>
+                    <span>CTO, TechCorp</span>
+                  </div>
+                </div>
               </div>
             </div>
             <!-- Slide 2 -->
             <div class="swiper-slide bento-slide bento-large">
-              <div class="testimonial-card">
-                <img src="thanks/2.png" alt="Testimonial 2" class="testimonial-img" />
+              <div class="glass-testimonial-card floating-card">
+                <div class="testimonial-avatar"><i class="fas fa-user-graduate"></i></div>
+                <div class="testimonial-content">
+                  <i class="fas fa-quote-left quote-icon"></i>
+                  <p class="testimonial-text">"As an instructor, he breaks down complex topics effortlessly. I finally
+                    understand RxJS and State Management thanks to him!"</p>
+                  <div class="testimonial-author">
+                    <h4>Mohamed Ali</h4>
+                    <span>Junior Developer</span>
+                  </div>
+                </div>
               </div>
             </div>
             <!-- Slide 3 -->
             <div class="swiper-slide bento-slide bento-small">
-              <div class="testimonial-card">
-                <img src="thanks/3.png" alt="Testimonial 3" class="testimonial-img" />
-              </div>
-            </div>
-            <!-- Slide 4 -->
-            <div class="swiper-slide bento-slide bento-wide">
-              <div class="testimonial-card">
-                <img src="thanks/4.png" alt="Testimonial 4" class="testimonial-img" />
-              </div>
-            </div>
-            <!-- Slide 5 -->
-            <div class="swiper-slide bento-slide bento-medium">
-              <div class="testimonial-card">
-                <img src="thanks/5.png" alt="Testimonial 5" class="testimonial-img" />
-              </div>
-            </div>
-            <!-- Slide 6 -->
-            <div class="swiper-slide bento-slide bento-large">
-              <div class="testimonial-card">
-                <img src="thanks/6.png" alt="Testimonial 6" class="testimonial-img" />
-              </div>
-            </div>
-            <!-- Slide 7 -->
-            <div class="swiper-slide bento-slide bento-small">
-              <div class="testimonial-card">
-                <img src="thanks/7.png" alt="Testimonial 7" class="testimonial-img" />
-              </div>
-            </div>
-            <!-- Slide 8 -->
-            <div class="swiper-slide bento-slide bento-wide">
-              <div class="testimonial-card">
-                <img src="thanks/8.png" alt="Testimonial 8" class="testimonial-img" />
-              </div>
-            </div>
-            <!-- Slide 9 -->
-            <div class="swiper-slide bento-slide bento-tall">
-              <div class="testimonial-card">
-                <img src="thanks/9.png" alt="Testimonial 9" class="testimonial-img" />
+              <div class="glass-testimonial-card floating-card">
+                <div class="testimonial-avatar"><i class="fas fa-briefcase"></i></div>
+                <div class="testimonial-content">
+                  <i class="fas fa-quote-left quote-icon"></i>
+                  <p class="testimonial-text">"The e-commerce platform he built for us is blazing fast and SEO
+                    optimized. We saw a 30% increase in sales within a month."</p>
+                  <div class="testimonial-author">
+                    <h4>Youssef Hassan</h4>
+                    <span>Business Owner</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -908,6 +917,49 @@
       <p>&copy; 2024 Ahmed Abouelwafa. All rights reserved.</p>
     </div>
   </footer>
+
+  <!-- Project Details Modal -->
+  <div class="project-modal-overlay" id="project-modal">
+    <div class="project-modal-content">
+      <button class="modal-close-btn" id="modal-close-btn"><i class="fas fa-times"></i></button>
+
+      <div class="modal-header">
+        <h2 id="modal-title">Project Title</h2>
+        <div class="modal-tags" id="modal-tags">
+          <!-- Injected tags -->
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <section class="modal-section">
+          <h3><i class="fas fa-bullseye"></i> The Challenge</h3>
+          <p id="modal-challenge">Description of the business problem...</p>
+        </section>
+
+        <section class="modal-section">
+          <h3><i class="fas fa-chess-knight"></i> Technical Decision</h3>
+          <p id="modal-decision">Why Clean Architecture? Why SignalR?...</p>
+        </section>
+
+        <section class="modal-section">
+          <h3><i class="fas fa-code"></i> Implementation</h3>
+          <p id="modal-implementation">Key features and code details...</p>
+        </section>
+
+        <section class="modal-section">
+          <h3><i class="fas fa-chart-line"></i> The Result</h3>
+          <p id="modal-result">Performance metrics and outcome...</p>
+        </section>
+      </div>
+
+      <div class="modal-footer">
+        <a href="#" target="_blank" class="btn-primary" id="modal-github-btn"><i class="fab fa-github"></i> View
+          Code</a>
+        <a href="#" target="_blank" class="btn-secondary" id="modal-live-btn"><i class="fas fa-external-link-alt"></i>
+          Live Demo</a>
+      </div>
+    </div>
+  </div>
 
   <!-- Scroll Progress Button -->
   <div class="progress-wrap-container">

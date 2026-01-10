@@ -1,0 +1,2 @@
+my_flash\F1\2235\
+MP_8400_03.60.0b,6-3-2013 23:50:42s, Drive: G,R/W= 0%,Test Time:37, Time taken: 116.1 seconds, Capacity: 8192, Serial Number: 8400336772223500, Flash Number: 1,UIDeviceIndex=2, Firmware Version: 6.08.53, Status: PASS [CS]:0x35520449

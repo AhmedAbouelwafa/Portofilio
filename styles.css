@@ -58,12 +58,15 @@ body {
     background-color: var(--bg-color);
     line-height: 1.6;
     overflow-x: hidden !important;
-    /* Force hide horizontal scroll */
     width: 100%;
     position: relative;
-    cursor: none;
+    /* cursor: none; REMOVED to show default mouse */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+/* ... existing code ... */
+
+/* Cursor logic moved to bottom */
 
 /* Custom Yellow Cursor */
 .custom-cursor {
@@ -191,14 +194,37 @@ body.light-mode .navbar {
     font-size: 0.95rem;
     font-weight: 500;
     color: var(--text-secondary);
+    position: relative;
+    padding-bottom: 5px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 2px;
 }
 
 .nav-links a:hover {
+    color: var(--text-primary);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a.active {
     color: var(--primary);
 }
 
-.nav-links a:active {
-    transform: scale(0.95);
+.nav-links a.active::after {
+    width: 100%;
 }
 
 /* Page Transition / Click Animation */
@@ -800,6 +826,7 @@ body.light-mode .stat-row span {
     z-index: 2;
     background: linear-gradient(to bottom right, #fff 30%, #94a3b8 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
     /* text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); Removed to fix weird artifact */
@@ -1189,10 +1216,12 @@ body.light-mode .section-header h2 {
 }
 
 .about-img {
-    width: 100%;
-    height: auto;
-    max-width: none;
-    /* Explicitly ensure no limit */
+    width: 450px;
+    /* Fixed width - Increased */
+    height: 550px;
+    /* Fixed height - Increased */
+    object-fit: cover;
+    /* Maintain aspect ratio */
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -2215,7 +2244,7 @@ body.light-mode .skill-card:hover span {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    padding: 2.5rem 1.5rem;
+    padding: 2.5rem;
     text-align: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
@@ -2235,8 +2264,8 @@ body.light-mode .skill-card:hover span {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 4px;
+    width: 70%;
+    height: 3px;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     transform: scaleX(0);
     transition: transform 0.4s ease;
@@ -2248,9 +2277,9 @@ body.light-mode .skill-card:hover span {
 }
 
 .service-icon {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     color: var(--primary);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.4rem;
     display: inline-block;
     padding: 1rem;
     background: rgba(99, 102, 241, 0.1);
@@ -2562,4 +2591,540 @@ body.light-mode .service-box:hover h3 {
     gap: 1.5rem;
     margin-top: 2rem;
     flex-wrap: wrap;
+}
+
+/* --- FEATURE: Project Details Modal --- */
+.project-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 1rem;
+}
+
+.project-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.project-modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    padding: 2.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transform: translateY(30px);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--text-primary);
+}
+
+.project-modal-overlay.active .project-modal-content {
+    transform: translateY(0);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.modal-close-btn:hover {
+    color: var(--primary);
+}
+
+.modal-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.modal-header h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.modal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.modal-tags span {
+    padding: 0.3rem 0.8rem;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.modal-section {
+    margin-bottom: 2rem;
+}
+
+.modal-section h3 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-section h3 i {
+    color: var(--secondary);
+}
+
+.modal-section p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* --- FEATURE: Glassmorphism Testimonials --- */
+.glass-testimonial-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    padding: 2.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+}
+
+.glass-testimonial-card:hover {
+    box-shadow: 0 8px 32px 0 rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+body.light-mode .glass-testimonial-card {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+}
+
+.testimonial-avatar {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+}
+
+.testimonial-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.testimonial-text {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.testimonial-author h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.2rem;
+}
+
+.testimonial-author span {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.floating-card {
+    animation: floating-y 6s ease-in-out infinite;
+}
+
+@keyframes floating-y {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* --- FEATURE: Theme Transition Overlay --- */
+.theme-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f8fafc;
+    /* Color of Light Mode BG */
+    z-index: 99999;
+    border-radius: 50%;
+    transform: scale(0);
+    pointer-events: none;
+    /* Transformation handled by GSAP */
+}
+
+/* --- FEATURE: Custom Cursor --- */
+/* --- FEATURE: Custom Cursor --- */
+.cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    z-index: 10002;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px var(--primary);
+}
+
+body.light-mode .cursor-dot {
+    background-color: var(--primary);
+    /* Keep primary or darker for light mode */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.cursor-outline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid rgba(160, 160, 255, 0.8);
+    /* Brighter border for Dark Mode */
+    border-radius: 50%;
+    z-index: 10001;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+        height 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+        background-color 0.3s,
+        border-color 0.3s;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+    /* Subtle glow */
+}
+
+body.light-mode .cursor-outline {
+    border-color: rgba(30, 41, 59, 0.3);
+    /* Darker border for light mode */
+}
+
+/* Hover State for Cursor */
+.cursor-hover .cursor-outline {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(99, 102, 241, 0.1);
+    border-color: var(--primary);
+    backdrop-filter: blur(1px);
+}
+
+body.light-mode .cursor-hover .cursor-outline {
+    background-color: rgba(99, 102, 241, 0.05);
+    /* Lighter bg for hover */
+    border-color: var(--primary);
+}
+
+/* Specific Project Hover State */
+/* Specific Project Hover State - Redesigned */
+.cursor-outline.project-hover {
+    width: 80px !important;
+    height: 80px !important;
+    background-color: rgba(99, 102, 241, 0.85) !important;
+    /* Semi-transparent primary */
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(4px);
+    opacity: 1;
+    z-index: 10003;
+    box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.5);
+    /* Soft shadow */
+}
+
+/* Light mode adjustment for professional look */
+body.light-mode .cursor-outline.project-hover {
+    background-color: rgba(15, 23, 42, 0.9) !important;
+    /* Dark bubble on light mode for contrast */
+    border-color: transparent !important;
+}
+
+.cursor-text {
+    font-size: 0.75rem;
+    /* Smaller font */
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    /* Wider spacing for elegance */
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.cursor-hover .cursor-text {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.cursor-hover .cursor-dot {
+    opacity: 0;
+}
+
+
+
+
+
+/* --- FEATURE: Interactive About Code Editor --- */
+.editor-footer-bar {
+    background: #1e1e1e;
+    /* VS Code dark footer */
+    padding: 5px 15px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    border-top: 1px solid #333;
+}
+
+.run-btn {
+    background-color: #107c10;
+    color: white;
+    border: none;
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+
+.run-btn:hover {
+    background-color: #0b5a0b;
+}
+
+.about-terminal {
+    background-color: #1e1e1e;
+    border-top: 1px solid #333;
+    color: #cccccc;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.85rem;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.about-terminal.active {
+    height: 200px;
+    padding-bottom: 10px;
+}
+
+.terminal-header {
+    background: #252526;
+    padding: 4px 15px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.terminal-content {
+    padding: 10px 15px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.terminal-row {
+    margin-bottom: 4px;
+    opacity: 0;
+    animation: fadeIn 0.2s forwards;
+    display: block;
+}
+
+.terminal-success {
+    color: #4ec9b0;
+}
+
+.terminal-string {
+    color: #ce9178;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Ensure swiper slide size for glass cards */
+.bento-slide {
+    height: auto !important;
+}
+
+.swiper-slide {
+    height: auto !important;
+    display: flex;
+    justify-content: center;
+}
+
+/* --- FEATURE: Take a Look (Arabic) --- */
+.take-a-look-container {
+    position: relative;
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    /* direction: rtl; Removed to control absolute items better */
+}
+
+/* The Text - Vibrant & Fun */
+.glowing-arabic {
+    font-family: 'Lemonada', 'Cairo', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #FF9966 0%, #FF5E62 100%);
+    /* Orange-Pink punchy gradient */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 10px rgba(255, 94, 98, 0.4));
+    /* Soft colored glow */
+    position: relative;
+    z-index: 2;
+    padding: 0.5rem 2rem;
+    border: 3px dashed #FF9966;
+    border-radius: 60px;
+    transform: rotate(-3deg) scale(1);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: default;
+}
+
+.glowing-arabic:hover {
+    transform: rotate(0deg) scale(1.1);
+}
+
+/* The Arrows */
+.arrow-look {
+    position: absolute;
+    top: 50%;
+    width: 180px;
+    height: 60px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(255, 153, 102, 0.6));
+    /* Glow matching text */
+}
+
+/* Custom SVG Arrows directly in CSS for "Long Curved Arrow" look */
+.arrow-look.right {
+    right: -5%;
+    transform: translateY(-50%) rotate(-5deg);
+    /* Orange Arrow SVG */
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='60' viewBox='0 0 200 60' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M195 15C130 60 40 50 5 30M5 30L35 20M5 30L25 55' stroke='%23FF9966' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    animation: float-arrow-right 3s ease-in-out infinite;
+}
+
+.arrow-look.left {
+    left: -5%;
+    transform: translateY(-50%) scaleX(-1) rotate(-5deg);
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='60' viewBox='0 0 200 60' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M195 15C130 60 40 50 5 30M5 30L35 20M5 30L25 55' stroke='%23FF9966' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    animation: float-arrow-left 3s ease-in-out infinite;
+}
+
+/* Float Animations */
+@keyframes float-arrow-right {
+
+    0%,
+    100% {
+        right: -6%;
+        transform: translateY(-50%) rotate(-5deg);
+    }
+
+    50% {
+        right: -3%;
+        transform: translateY(-60%) rotate(0deg);
+    }
+}
+
+@keyframes float-arrow-left {
+
+    0%,
+    100% {
+        left: -6%;
+        transform: translateY(-50%) scaleX(-1) rotate(-5deg);
+    }
+
+    50% {
+        left: -3%;
+        transform: translateY(-60%) scaleX(-1) rotate(0deg);
+    }
+}
+
+/* Responsive Hide (Mobile doesn't have screen space for side arrows) */
+@media (max-width: 768px) {
+    .arrow-look {
+        display: none;
+    }
 }
