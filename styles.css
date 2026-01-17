@@ -111,8 +111,12 @@ body {
 }
 
 /* Mobile Cursor Fix */
-@media (hover: none) and (pointer: coarse) {
-    .custom-cursor {
+@media (hover: none) and (pointer: coarse),
+(max-width: 768px) {
+
+    .custom-cursor,
+    .cursor-outline,
+    .cursor-dot {
         display: none !important;
     }
 
@@ -190,6 +194,7 @@ body.light-mode .navbar {
     align-items: center;
 }
 
+
 .nav-links a {
     font-size: 0.95rem;
     font-weight: 500;
@@ -199,24 +204,10 @@ body.light-mode .navbar {
     transition: color 0.3s ease;
 }
 
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 2px;
-}
+/* Underline removed as requested */
 
 .nav-links a:hover {
-    color: var(--text-primary);
-}
-
-.nav-links a:hover::after {
-    width: 100%;
+    color: var(--primary);
 }
 
 .nav-links a.active {
@@ -1563,6 +1554,7 @@ footer {
     background: var(--primary);
     /* Hover background */
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     left: 0;
     top: 0;
@@ -2720,14 +2712,13 @@ body.light-mode .service-box:hover h3 {
 }
 
 /* --- FEATURE: Glassmorphism Testimonials --- */
+/* --- FEATURE: Modern Solid Testimonials --- */
 .glass-testimonial-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
-    padding: 2.5rem;
+    background: linear-gradient(145deg, #1e1e1e, #252526);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
+    padding: 3rem 2rem;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -2735,6 +2726,20 @@ body.light-mode .service-box:hover h3 {
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Accent top border */
+.glass-testimonial-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    opacity: 0.8;
 }
 
 .glass-testimonial-card:hover {
@@ -2875,9 +2880,9 @@ body.light-mode .cursor-outline {
 }
 
 /* Hover State for Cursor */
-.cursor-hover .cursor-outline {
-    width: 60px;
-    height: 60px;
+.cursor-outline.cursor-hover {
+    width: 80px;
+    height: 80px;
     background-color: rgba(99, 102, 241, 0.1);
     border-color: var(--primary);
     backdrop-filter: blur(1px);
@@ -3173,4 +3178,145 @@ body.light-mode .cursor-outline.project-hover {
     .arrow-look {
         display: none;
     }
+}
+
+/* --- FEATURE: Redesigned 'My Services' Section --- */
+.services-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+.service-box {
+    background: rgba(30, 30, 30, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 2.5rem 2rem;
+    border-radius: 24px;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Hover Effect: Lift & Glow */
+.service-box:hover {
+    transform: translateY(-10px);
+    background: rgba(40, 40, 40, 0.6);
+    border-color: var(--primary);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Icon Container - Unique Shape (Organic Blob) */
+.service-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    /* Organic Blob Shape */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: white;
+    transition: all 0.5s ease;
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+}
+
+.service-box:hover .service-icon {
+    border-radius: 50%;
+    /* Morphs to circle on hover */
+    transform: scale(1.1) rotate(10deg);
+    box-shadow: 0 0 20px var(--primary);
+}
+
+.service-box h3 {
+    font-size: 1.35rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.service-box p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+/* Decorative Background Element */
+.service-box::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 120px;
+    height: 120px;
+    background: var(--primary);
+    opacity: 0.05;
+    border-radius: 50%;
+    filter: blur(40px);
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+.service-box:hover::before {
+    top: -20px;
+    right: -20px;
+    opacity: 0.15;
+    filter: blur(30px);
+}
+
+/* Light Mode Overrides */
+body.light-mode .service-box {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .service-box:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--primary);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .service-box::after {
+    color: rgba(0, 0, 0, 0.03);
+}
+
+/* Add number counter */
+.services-container {
+    counter-reset: service-counter;
+}
+
+.service-box::after {
+    counter-increment: service-counter;
+    content: "0" counter(service-counter);
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 3rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.03);
+    font-family: var(--font-primary);
+    transition: all 0.3s;
+}
+
+.service-box:hover::after {
+    color: #fca311;
+    /* Orange Glow (Default/Dark Mode) */
+    text-shadow: 0 0 20px rgba(252, 163, 17, 0.6);
+    transform: translateY(-5px) scale(1.1);
+}
+
+/* Purple Glow for Light Mode */
+body.light-mode .service-box:hover::after {
+    color: #8b5cf6;
+    /* Violet */
+    text-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
 }
