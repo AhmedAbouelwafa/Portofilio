@@ -459,4 +459,31 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- 9. WhatsApp Button & Chatbot ---
+    const whatsappBtn = document.getElementById('whatsapp-btn');
+    const chatbotPopup = document.getElementById('chatbot-popup');
+    const closeChatBtn = document.getElementById('close-chat');
+
+    if (whatsappBtn && chatbotPopup) {
+        whatsappBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            chatbotPopup.classList.toggle('active');
+        });
+
+        // Close on clicking X
+        if (closeChatBtn) {
+            closeChatBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                chatbotPopup.classList.remove('active');
+            });
+        }
+
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!chatbotPopup.contains(e.target) && !whatsappBtn.contains(e.target)) {
+                chatbotPopup.classList.remove('active');
+            }
+        });
+    }
 });
